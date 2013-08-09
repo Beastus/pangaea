@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pangaea Test</title>
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+	<div class="content">
+
+		<div id="canvas_container">
+		</div>
+
+		<div id="message">
+			Work in progress
+		</div>
+
+		<div id="tools" style="display: none;">
+			<button id="buttonFullscreen">Fullscreen</button>
+		</div>
+
+	</div>
+
+	<script src="js/jquery-1.9.1.js"></script>
+	<!-- Pangaea scripts -->
+	<script src="../src/core.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			"use strict";
+
+			$("#buttonFullscreen").click(function () {
+				// make the canvas full screen
+				var c = document.getElementById("canvas");
+				if (c.requestFullScreen) {
+					c.requestFullScreen();
+				} else if (c.webkitRequestFullScreen) {
+					c.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+				} else if (c.mozRequestFullScreen) {
+					c.mozRequestFullScreen();
+				}
+			});
+		});
+	</script>
+</body>
+</html>
