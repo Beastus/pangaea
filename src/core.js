@@ -24,7 +24,7 @@ var pan = pan || {};
 	 */
 	pan.core = {
 		start: function () {
-			pan.core.then = Date.now();
+			pan.core.last = Date.now();
 		},
 		frame: function () {
 			pan.core.delta();
@@ -34,8 +34,8 @@ var pan = pan || {};
 		},
 		delta: function () {
 			pan.core.now = Date.now();
-			pan.core.delta = (pan.core.now - pan.core.then);
-			pan.core.then = pan.core.now;
+			pan.core.delta = (pan.core.now - pan.core.last);
+			pan.core.last = pan.core.now;
 		},
 		update: function () {
 			// update state
