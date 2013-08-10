@@ -4,21 +4,48 @@ body
 	background-color: #333339;
 	font-size: 14px;
 }
+.index
+{
+	margin: auto;
+	border-radius: 6px;
+	padding: 21px;
+	margin-top: 32px;
+	margin-bottom: 24px;
+	text-align: center;
+}
+.index a
+{
+	font-size: 21px;
+	color: #fff;
+	text-decoration: none;
+	margin: 12px;
+	padding: 12px 24px 12px 24px;
+}
+.index a:hover
+{
+	background-color: #555;
+	border-radius: 6px;
+}
+.index a:active
+{
+	background-color: #666;
+}
 #content
 {
 	width: 100%;
 }
-#canvas_container, #message
+#canvas_container
 {
 	width: 960px;
 	margin: auto;
 }
 #canvas_container
 {
-	margin-top: 20px;
+	margin-top: 6px;
 }
 #message
 {
+	width: 100%;
 	text-align: center;
 	padding-top: 5px;
 	padding-bottom: 5px;

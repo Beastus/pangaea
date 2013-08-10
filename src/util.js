@@ -212,7 +212,8 @@
 		 */
 		bind: function () {
 
-			$(document).keydown(function (event) {
+			document.onkeydown = function (event) {
+				event = event || window.event;
 				var code = event.keyCode;
 				if (code === 16) {
 					pan.util.keyboard.shift = true;
@@ -230,9 +231,9 @@
 					console.log("keybown.keycode: " + code + "; keyboard: " + 
 						pan.util.keyboard.toString());
 				}
-			});
-
-			$(document).keyup(function (event) {
+			};
+			document.onkeyup = function (event) {
+				event = event || window.event;
 				var code = event.keyCode;
 				if (code === 16) {
 					pan.util.keyboard.shift = false;
@@ -250,12 +251,11 @@
 					console.log("keyup.keycode: " + code + "; keyboard: " + 
 						pan.util.keyboard.toString());
 				}
-			});
-
+			};
 			// this prevents sticky keys when window focus is lost
-			$(window).blur(function () {
+			window.onblur = function () {
 				pan.util.keyboard.clear();
-			});
+			};
 		}
 	};
 

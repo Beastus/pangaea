@@ -32,10 +32,15 @@
 		attach: function (element, updateCallback, renderCallback) {
 
 			// setup canvas element
-			var canvasElement = $("<canvas id='canvas' width='" + pan.canvas.width + 
-				"' height='" + pan.canvas.height + "'></canvas>");
-			pan.canvas.context = canvasElement.get(0).getContext("2d");
-			canvasElement.prependTo(element);
+			var canvasElement = document.createElement("canvas");
+			canvasElement.setAttribute("id", "canvas");
+			canvasElement.setAttribute("width", pan.canvas.width);
+			canvasElement.setAttribute("height", pan.canvas.height);
+			pan.canvas.context = canvasElement.getContext("2d");
+			if (!element.appendChild) {
+				element = document.getElementById(element);
+			}
+			element.appendChild(canvasElement);
 
 			// set callbacks
 			if (updateCallback) {
@@ -64,9 +69,14 @@
 				pan.canvas.player = new pan.util.Player(pan.canvas.width / 2 - 16, pan.canvas.height / 2 - 16);
 			}
 
+			// TEST CODE
 			// add a couple layers just for testing
-			pan.canvas.push(new pan.Layer("My First Layer", 87));
+			var layer1 = new pan.Layer("My First Layer");
+			layer1.tiles.push("Test Sprite 1");
+			layer1.tiles.push("Test Sprite 2");
+			pan.canvas.push(layer1);
 			pan.canvas.push(new pan.Layer("My Second Layer", 13));
+			//
 
 			// start animation
 			pan.canvas.frame();

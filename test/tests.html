@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pangaea Bare Bones</title>
+</head>
+<body>
+
+  <div class="content">
+
+    <h3>Unit Tests Coming Soon</h3>
+
+    <div id="canvas_container">
+    </div>
+
+  </div>
+
+  <!-- Pangaea scripts -->
+  <script src="../src/core.js"></script>
+  <script src="../src/util.js"></script>
+  <script src="../src/canvas.js"></script>
+  <script src="../src/layer.js"></script>
+
+  <script>
+
+    // attach canvas
+    pan.canvas.attach("canvas_container");
+
+    // customize a few settings (optional)
+    pan.canvas.backcolor = "#eee";
+
+    // bind keyboard events (optional)
+    pan.util.keyboard.bind();
+
+    // start animation loop
+    pan.canvas.start();
+
+  </script>
+</body>
+</html>

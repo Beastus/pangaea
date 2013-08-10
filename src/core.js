@@ -32,23 +32,31 @@ var pan = pan || {};
 		// the font definition of diagnostic text
 		"font_style": "13px 'Calibri','Courier'",
 
+		// enables hit testing
+		"enable_hit_testing": true,
+
 		// draw outline of hit test regions
 		"draw_hit_regions": false,
 
 		// write keyboard activity to console.log
-		"log_key_input": false
-	};
+		"log_key_input": false,
 
-	// convenient prototypal inheritance function
-	// Example: newObject = Object.create(oldObject);
-	// http://javascript.crockford.com/prototypal.html
-	if (typeof Object.create !== 'function') {
-		Object.create = function (o) {
-			function F() {}
-			F.prototype = o;
-			return new F();
-		};
-	}
+		// automatic resizing of canvas when change to or from full screen
+		"auto_resize": false,
+
+		toString: function () {
+			return "[debug_init:" + this.debug_init +
+				",enable_player:" + this.enable_player +
+				",draw_fps:" + this.draw_fps +
+				",font_color:" + this.font_color +
+				",font_style:" + this.font_style +
+				",enable_hit_testing:" + this.enable_hit_testing +
+				",draw_hit_regions:" + this.draw_hit_regions +
+				",log_key_input:" + this.log_key_input + 
+				",auto_resize:" + this.auto_resize +
+				"]";
+		}
+	};
 }());
 
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
