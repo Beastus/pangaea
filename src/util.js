@@ -8,12 +8,13 @@
 	pan.util = pan.util || {};
 
 	/**
+	 * @desc timer used for diagnostics purposes
      * @constructor 
      * @memberof pan.util
      */
 	pan.util.DeltaTimer = function () {
 
-		var startTime, frames = 0, frameRate = 0, last = 0, target = 0, overflow = 0, resetThreshold = 80, resetCount = 0;
+		var startTime, frames = 0, frameRate = 0, last = 0, target = 0, overflow = 0, resetThreshold = 100, resetCount = 0;
 		// return the object that we want to expose
 		return {
 			start: function (fps) {

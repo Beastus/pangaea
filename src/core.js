@@ -21,41 +21,60 @@ var pan = pan || {};
 
 	/**
 	 * @class {Object}
-	 * @desc 
+	 * @desc encapsulates the tile rendering surface
 	 */
-	pan.core = {
-		queue: [],
-		start: function () {
-			pan.core.last = Date.now();
+	pan.canvas = {
+		width: 960,
+		height: 640,
+		backcolor: "#eee",
+		context: null,
+		layers: [],
+		delta: 0,
+		last: 0,
+		init: function () {
+			pan.canvas.last = Date.now();
+		},
+		attach: function (element) {
+			// setup canvas element
+			var canvasElement = $("<canvas id='canvas' width='" + pan.canvas.width + 
+				"' height='" + pan.canvas.height + "'></canvas>");
+			pan.canvas.context = canvasElement.get(0).getContext("2d");
+			canvasElement.prependTo(element);
+		},
+		push: function (layer) {
+			pan.canvas.layers.push(layer);
 		},
 		frame: function () {
-			pan.core.delta();
-			pan.core.update();
-			pan.core.render();
-			pan.core.animationFrame = window.requestAnimationFrame(pan.core.frame);
-		},
-		delta: function () {
-			pan.core.now = Date.now();
-			pan.core.delta = (pan.core.now - pan.core.last);
-			pan.core.last = pan.core.now;
+			pan.canvas.update();
+			pan.canvas.render();
+			pan.canvas.animationFrame = window.requestAnimationFrame(pan.canvas.frame);
 		},
 		update: function () {
-			// update state
-			var i;
-			for (i = 0; i < this.queue.length; i++) {
-				this.queue[i].update();
+			var i, now;
+			// update delta state
+			now = Date.now();
+			pan.canvas.delta = (now - pan.canvas.last);
+			pan.canvas.last = now;
+			// update each object in layers queue
+			for (i = 0; i < pan.canvas.layers.length; i++) {
+				pan.canvas.layers[i].update();
 			}
 		},
 		render: function () {
-			// draw to canvas
 			var i;
-			for (i = 0; i < this.queue.length; i++) {
-				this.queue[i].render();
+			pan.canvas.clear();
+			// call render on each object in layers queue
+			for (i = 0; i < pan.canvas.layers.length; i++) {
+				pan.canvas.layers[i].render();
 			}
+		},
+		clear: function () {
+			pan.canvas.context.fillStyle = pan.canvas.backcolor;
+			pan.canvas.context.fillRect(0, 0, pan.canvas.width, pan.canvas.height);
 		}
 	};
 
-	// Setup convenient prototypal inheritance function
+	// convenient prototypal inheritance function
 	// Example: newObject = Object.create(oldObject);
 	// http://javascript.crockford.com/prototypal.html
 	if (typeof Object.create !== 'function') {

@@ -42,6 +42,40 @@
 					c.mozRequestFullScreen();
 				}
 			});
+
+			//
+			// TEST CODE
+
+			// attack canvas
+			pan.canvas.attach($("#canvas_container"));
+
+			if (pan.FLAGS.DRAW_FPS) {
+				var DeltaTimer = pan.util.DeltaTimer();
+				DeltaTimer.start(60);
+			}
+
+			// intiate game loop
+			(function gameloop() {
+
+				window.requestAnimationFrame(gameloop);
+
+				// update frame
+				pan.canvas.update();
+				pan.canvas.render();
+				
+				// debug code
+				if (pan.FLAGS.DRAW_FPS) {
+					// display fps stats
+					DeltaTimer.ready();
+					pan.canvas.context.font = "10pt Calibri";
+					pan.canvas.context.fillStyle = "black";
+					pan.canvas.context.fillText("FPS - Setting: 60, Actual: " + 
+						DeltaTimer.getFrameRate(), 6, 14);
+				}
+			}());
+
+			// fade in the page
+			$("body").hide().fadeIn(800);
 		});
 	</script>
 </body>
