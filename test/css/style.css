@@ -1,8 +1,8 @@
 body
 {
-	font-family: 'calibri', 'arial', 'helvetica';
+	font-family: 'Calibri', 'Arial', 'Helvetica';
 	background-color: #333339;
-	font-size: 15px;
+	font-size: 14px;
 }
 #content
 {
@@ -13,19 +13,26 @@ body
 	width: 960px;
 	margin: auto;
 }
-#canvas_container { }
+#canvas_container
+{
+	margin-top: 20px;
+}
 #message
 {
-	font-weight: bold;
 	text-align: center;
-	padding-top: 6px;
-	padding-bottom: 6px;
-	color: #222;
-	background-color: rgba(240, 240, 240, 0.1);
-	border-radius: 3px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	color: #eee;
+	background-color: #444;
 	cursor: default;
 }
-#message:hover {
-	color: #111;
-	background-color: rgba(240, 240, 240, 0.2);
+#options
+{
+	font-size: 0.7em;
+}
+#options fieldset {
+	border: none;
+	margin: auto;
+	width: 960px;
+	text-align: center;
 }

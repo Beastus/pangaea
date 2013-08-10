@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Pangaea Test</title>
   <link href="css/style.css" rel="stylesheet">
+  <link href="css/jquery-ui-1.10.3.custom.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -13,25 +14,71 @@
 		</div>
 
 		<div id="message">
-			Work in progress
+			Pangaea is a simple 2D tile renderer intended as an experimental step toward a 2D game engine.
 		</div>
 
-		<div id="tools" style="display: inline;">
-			<button id="buttonFullscreen">Fullscreen</button>
+		<div id="options">
+			<fieldset id="flags">
+				<legend></legend>
+				<input type="checkbox" id="check1" /><label for="check1">enable_player</label>
+				<input type="checkbox" id="check2" /><label for="check2">draw_fps</label>
+				<input type="checkbox" id="check3" /><label for="check3">draw_hit_regions</label>
+				<input type="checkbox" id="check4" /><label for="check4">log_key_input</label>
+				<button id="buttonFullscreen">full_screen</button>
+			</fieldset>
 		</div>
 
 	</div>
 
 	<script src="js/jquery-1.9.1.js"></script>
+	<script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+	<script src="js/jscolor/jscolor.js"></script>
 	<!-- Pangaea scripts -->
 	<script src="../src/core.js"></script>
 	<script src="../src/util.js"></script>
+	<script src="../src/canvas.js"></script>
+	<script src="../src/layer.js"></script>
 
 	<script>
 		$(document).ready(function () {
 			"use strict";
 
-			$("#buttonFullscreen").click(function () {
+			var onupdate, onrender;
+
+			onupdate = function () {
+				// optionally fired on frame update
+			};
+
+			onrender = function () {
+				// optionally fired on frame render
+			};
+
+			// attach canvas
+			pan.canvas.attach($("#canvas_container"), onupdate, onrender);
+
+			// start animation loop
+			pan.canvas.start();
+
+			// bind keyboard events
+			pan.util.keyboard.bind();
+
+
+			/*
+			 * Options Panel
+			 */
+
+			// debug flags checkbox set
+			$("#flags :checkbox").click(function () {
+				var checkstate = $("#flags").find("input:checkbox");
+				pan.settings.enable_player = checkstate[0].checked;
+				pan.settings.draw_fps = checkstate[1].checked;
+				pan.settings.draw_hit_regions = checkstate[2].checked;
+				pan.settings.log_key_input = checkstate[3].checked;
+			});
+			$("#flags").buttonset();
+
+			// wire up fullscreen button
+			$("#buttonFullscreen").button().click(function () {
 				// make the canvas full screen
 				var c = document.getElementById("canvas");
 				if (c.requestFullScreen) {
@@ -42,37 +89,6 @@
 					c.mozRequestFullScreen();
 				}
 			});
-
-			//
-			// TEST CODE
-
-			// attack canvas
-			pan.canvas.attach($("#canvas_container"));
-
-			if (pan.FLAGS.DRAW_FPS) {
-				var DeltaTimer = pan.util.DeltaTimer();
-				DeltaTimer.start(60);
-			}
-
-			// intiate game loop
-			(function gameloop() {
-
-				window.requestAnimationFrame(gameloop);
-
-				// update frame
-				pan.canvas.update();
-				pan.canvas.render();
-				
-				// debug code
-				if (pan.FLAGS.DRAW_FPS) {
-					// display fps stats
-					DeltaTimer.ready();
-					pan.canvas.context.font = "10pt Calibri";
-					pan.canvas.context.fillStyle = "black";
-					pan.canvas.context.fillText("FPS - Setting: 60, Actual: " + 
-						DeltaTimer.getFrameRate(), 6, 14);
-				}
-			}());
 
 			// fade in the page
 			$("body").hide().fadeIn(800);
