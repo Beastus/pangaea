@@ -91,7 +91,7 @@
 		y = y || 0;
 		w = w || 32;
 		h = h || 32;
-		c = c || "0062ae";
+		c = c || "#0062ae";
 
 		// return object
 		return {
@@ -199,14 +199,6 @@
 		},
 
 		/**
-		 * @desc returns a string representation of the object state
-		 * @method
-		 */
-		toString: function () {
-			return "[stack.length:" + this.stack.length + ",shift:" + this.shift + "]";
-		},
-
-		/**
 		 * @desc binds document keydown and keyup events to pan.util.keyboard object
 		 * @method
 		 */
@@ -256,6 +248,14 @@
 			window.onblur = function () {
 				pan.util.keyboard.clear();
 			};
+		},
+
+		/**
+		 * @desc returns a string representation of the object state
+		 * @method
+		 */
+		toString: function () {
+			return "[stack.length:" + this.stack.length + ",shift:" + this.shift + "]";
 		}
 	};
 
