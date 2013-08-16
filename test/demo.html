@@ -56,6 +56,9 @@
 				// optionally fired on frame render
 			};
 
+			// specify initial settings (cookie will override--see below)
+			pan.settings.enable_player = true;
+
 			// attach canvas
 			pan.canvas.attach("canvas_container", onupdate, onrender);
 
@@ -111,11 +114,13 @@
 			//
 
 			loadAllSettings = function () {
-				pan.settings.enable_player = loadSetting("enable_player") === "true";
-				pan.settings.draw_fps = loadSetting("draw_fps") === "true";
-				pan.settings.enable_hit_testing = loadSetting("enable_hit_testing") === "true";
-				pan.settings.draw_hit_regions = loadSetting("draw_hit_regions") === "true";
-				pan.settings.log_key_input = loadSetting("log_key_input") === "true";
+				if (loadSetting("enable_player") !== undefined) {
+					pan.settings.enable_player = loadSetting("enable_player") === "true";
+					pan.settings.draw_fps = loadSetting("draw_fps") === "true";
+					pan.settings.enable_hit_testing = loadSetting("enable_hit_testing") === "true";
+					pan.settings.draw_hit_regions = loadSetting("draw_hit_regions") === "true";
+					pan.settings.log_key_input = loadSetting("log_key_input") === "true";
+				}
 
 				// update form state
 				var checkstate = $("#flags").find("input:checkbox");

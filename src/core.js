@@ -33,7 +33,7 @@ var pan = pan || {};
 		"font_style": "13px 'Calibri','Courier'",
 
 		// enables hit testing
-		"enable_hit_testing": true,
+		"enable_hit_testing": false,
 
 		// draw outline of hit test regions
 		"draw_hit_regions": false,
