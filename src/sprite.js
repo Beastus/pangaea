@@ -1,0 +1,6 @@
+/**
+ * sprite class
+ *
+ * @namespace pan
+ */
+
