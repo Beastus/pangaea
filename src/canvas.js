@@ -200,12 +200,9 @@
 		 * @method
 		 */
 		prerender: function () {
-			var i, layer;
+			var i;
 			for (i = 0; i < pan.canvas.layers.length; i++) {
-
-				// prerender first map layer
-				layer = pan.canvas.layers[i] || {};
-				layer.prerender();
+				pan.canvas.layers[i].prerender();
 			}
 		},
 
