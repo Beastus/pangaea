@@ -42,7 +42,7 @@ var pan = pan || {};
 		"log_key_input": false,
 
 		// automatic resizing of canvas when change to or from full screen
-		"auto_resize": false,
+		"auto_resize": true,
 
 		toString: function () {
 			return "[debug_init:" + this.debug_init +
@@ -59,14 +59,13 @@ var pan = pan || {};
 	};
 }());
 
-// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
-// requestAnimationFrame polyfill by Erik Moller. Fixes from Paul Irish and Tino Zijdel.
-// MIT license
+
 (function () {
 	"use strict";
 
-	var lastTime = 0, vendors = ['ms', 'moz', 'webkit', 'o'], x, currTime, timeToCall, id;
+	var lastTime = 0, vendors = ['ms', 'moz', 'webkit', 'o'], x, currTime, timeToCall, id, onFullscreenChange;
+	// Based on requestAnimationFrame polyfill by Erik Moller, with fixes from Paul Irish and Tino Zijdel.
+	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 	for (x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
 		window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
 		window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||
@@ -87,5 +86,39 @@ var pan = pan || {};
 		window.cancelAnimationFrame = function (id) {
 		clearTimeout(id);
 		};
+	}
+
+
+	/*
+	 auto resize implementation and full screen support for *some* browsers.
+	 */
+	if (pan.settings.auto_resize) {
+
+		// respond to full screen change
+		onFullscreenChange = function () {
+
+			var c = document.getElementById("canvas");
+			if (document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen) {
+				// buffer canvas size
+				pan.util.tempSize = { 
+					w: pan.canvas.width, 
+					h: pan.canvas.height
+				};
+				pan.canvas.width = screen.width;
+				pan.canvas.height = screen.height;
+			} else {
+				if (pan.util.tempSize) {
+					pan.canvas.width = pan.util.tempSize.w;
+					pan.canvas.height = pan.util.tempSize.h;
+				}
+			}
+			c.width = pan.canvas.width;
+			c.height = pan.canvas.height;
+		};
+
+		// setup listeners in case fullscreen is enabled
+		document.addEventListener("fullscreenchange", onFullscreenChange);
+		document.addEventListener("mozfullscreenchange", onFullscreenChange);
+		document.addEventListener("webkitfullscreenchange", onFullscreenChange);
 	}
 }());

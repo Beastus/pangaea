@@ -84,14 +84,19 @@
 	 * @param {String} c color of the player sprite
 	 * @returns A player object
 	 */
-	pan.util.Player = function (x, y, w, h, c) {
+	pan.util.Player = function (x, y, w, h) {
+
+		var c, bc, cx, cy;
 
 		// specify defaults
 		x = x || 0;
 		y = y || 0;
 		w = w || 32;
 		h = h || 32;
-		c = c || "#0062ae";
+		cx = x;
+		cy = y;
+		c ="rgba(0, 98, 174, 0.75)";
+		bc ="rgba(255, 64, 64, 1)";
 
 		// return object
 		return {
@@ -100,32 +105,53 @@
 			 * @desc color to draw player sprite
 			 */
 			color: c,
+			bordercolor: bc,
 			/**
 			 * @desc base movement speed (pixels per update)
 			 */
-			speed: 4,
+			speed: 3,
 
 			/**
 			 * @desc updates player state based on pan.util.keyboard state
 			 * @method
 			 */
 			update: function () {
-				var key, rate;
+				var key, rate, bounds;
 				if (pan.util.keyboard.stack.length > 0) {
 					//
 					rate = pan.util.keyboard.shift ? this.speed * 2 : this.speed;
 					key = pan.util.keyboard.peek();
+					bounds = pan.canvas.map.clamp;
+
+					// adjust cx/cy values based on keyboard state
 					if (key === "w") {
-						y -= rate;
+						cy -= rate;
 					} else if (key === "a") {
-						x -= rate;
+						cx -= rate;
 					} else if (key === "s") {
-						y += rate;
+						cy += rate;
 					} else if (key === "d") {
-						x += rate;
+						cx += rate;
 					}
-					x = x.clamp(0, pan.canvas.width - w);
-					y = y.clamp(0, pan.canvas.height - h);
+
+					cx = cx.clamp(0, (pan.canvas.map.width * 32) - w);
+					cy = cy.clamp(0, (pan.canvas.map.height * 32) - h);
+
+					// move player sprite or map depending on map bounds
+					if (cx >= bounds.x && cx <= bounds.w) {
+						pan.canvas.map.offsetx = -(cx - bounds.x);
+						x = bounds.x;
+					} else {
+						x = (cx >= bounds.x) ? cx - (bounds.w - bounds.x) : cx;
+						x = x.clamp(0, pan.canvas.width - w);
+					}
+					if (cy >= bounds.y && cy <= bounds.h) {
+						pan.canvas.map.offsety = -(cy - bounds.y);
+						y = bounds.y;
+					} else {
+						y = (cy >= bounds.y) ? cy - (bounds.h - bounds.y) : cy;
+						y = y.clamp(0, pan.canvas.height - h);
+					}
 				}
 			},
 
@@ -136,8 +162,10 @@
 			draw: function (context) {
 				// draw player ellipse
 				context.beginPath();
-				context.fillStyle = this.color;
 				context.rect(x, y, w, h);
+				context.strokeStyle = this.bordercolor;
+				context.stroke();
+				context.fillStyle = this.color;
 				context.fill();
 				context.closePath();
 			}
@@ -258,7 +286,6 @@
 			return "[stack.length:" + this.stack.length + ",shift:" + this.shift + "]";
 		}
 	};
-
 
 	/**
 	 * Returns a number whose value is limited to the given range.
