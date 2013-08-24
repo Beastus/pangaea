@@ -204,6 +204,9 @@
 			for (i = 0; i < pan.canvas.layers.length; i++) {
 				pan.canvas.layers[i].prerender();
 			}
+
+			// mark canvas as ready
+			pan.canvas.ready = true;
 		},
 
 		/**

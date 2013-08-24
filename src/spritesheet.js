@@ -67,25 +67,7 @@
 	 */
 	pan.SpriteSheet = function (image, key) {
 
-		return {
-			name: key,
-			image: image,
-
-			/**
-			 * @desc updates sprite state
-			 * @method
-			 */
-			update: function () {
-				//
-			},
-
-			/**
-			 * @desc draws sprite to specified 2d context
-			 * @method
-			 */
-			draw: function (context) {
-				//
-			}
-		};
+		this.image = image;
+		this.name = key;
 	};
 }());

@@ -76,27 +76,26 @@
 	 */
 	pan.Atlas = function (image, name, size, frames) {
 
-		return {
-			image: image,
-			name: name,
-			size: size,
-			frames: frames,
-
-			/**
-			 * @desc updates atlas state
-			 * @method
-			 */
-			update: function () {
-				//
-			},
-
-			/**
-			 * @desc draws atlas to specified 2d context
-			 * @method
-			 */
-			draw: function (context) {
-				//
-			}
-		};
+		this.image = image;
+		this.name = name;
+		this.size = size;
+		this.frames = frames;
 	};
+
+	/**
+	 * @desc Updates atlas state
+	 * @method
+	 */
+	pan.Atlas.prototype.update = function () {
+		//
+	};
+
+	/**
+	 * @desc Draws atlas to specified 2d context
+	 * @method
+	 */
+	pan.Atlas.prototype.draw = function () {
+		//
+	};
+
 }());
