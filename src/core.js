@@ -6,7 +6,7 @@
 var pan = pan || {};
 
 (function () {
-	"use strict";
+	'use strict';
 
 	pan.version = '@@version';
 
@@ -18,50 +18,50 @@ var pan = pan || {};
 	pan.settings = {
 
 		// initializes debug objects even if flags are false
-		"debug_init": true,
+		'debugInit': true,
 
 		// enables keyboard-controlled test player sprite
-		"enable_player": false,
+		'enablePlayer': false,
 
 		// show frames per second on screen
-		"draw_fps": false,
+		'drawFps': false,
 
 		// the color of diagnostic text
-		"font_color": "cyan",
+		'fontColor': 'cyan',
 
 		// the font definition of diagnostic text
-		"font_style": "13px 'Calibri','Courier'",
+		'fontStyle': '13px "Calibri","Courier"',
 
 		// enables hit testing
-		"enable_hit_testing": false,
+		'enableHitTesting': false,
 
 		// draw outline of hit test regions
-		"draw_hit_regions": false,
+		'drawHitRegions': false,
 
 		// write keyboard activity to console.log
-		"log_key_input": false,
+		'logKeyInput': false,
 
 		// automatic resizing of canvas when change to or from full screen
-		"auto_resize": true,
+		'autoResize': true,
 
 		toString: function () {
-			return "[debug_init:" + this.debug_init +
-				",enable_player:" + this.enable_player +
-				",draw_fps:" + this.draw_fps +
-				",font_color:" + this.font_color +
-				",font_style:" + this.font_style +
-				",enable_hit_testing:" + this.enable_hit_testing +
-				",draw_hit_regions:" + this.draw_hit_regions +
-				",log_key_input:" + this.log_key_input + 
-				",auto_resize:" + this.auto_resize +
-				"]";
+			return '[debugInit:' + this.debugInit +
+				',enablePlayer:' + this.enablePlayer +
+				',drawFps:' + this.drawFps +
+				',drawColor:' + this.drawColor +
+				',fontStyle:' + this.fontStyle +
+				',enableHitTesting:' + this.enableHitTesting +
+				',drawHitRegions:' + this.drawHitRegions +
+				',logKeyInput:' + this.logKeyInput +
+				',autoResize:' + this.autoResize +
+				']';
 		}
 	};
 }());
 
 
 (function () {
-	"use strict";
+	'use strict';
 
 	var lastTime = 0, vendors = ['ms', 'moz', 'webkit', 'o'], x, currTime, timeToCall, id, onFullscreenChange;
 	// Based on requestAnimationFrame polyfill by Erik Moller, with fixes from Paul Irish and Tino Zijdel.
@@ -72,7 +72,7 @@ var pan = pan || {};
 			window[vendors[x] + 'CancelRequestAnimationFrame'];
 	}
 	if (!window.requestAnimationFrame) {
-		window.requestAnimationFrame = function (callback, element) {
+		window.requestAnimationFrame = function (callback) {
 			currTime = new Date().getTime();
 			timeToCall = Math.max(0, 16 - (currTime - lastTime));
 			id = window.setTimeout(function () {
@@ -84,24 +84,24 @@ var pan = pan || {};
 	}
 	if (!window.cancelAnimationFrame) {
 		window.cancelAnimationFrame = function (id) {
-		clearTimeout(id);
+			clearTimeout(id);
 		};
 	}
 
 
 	/*
-	 auto resize implementation and full screen support for *some* browsers.
+	 * auto resize implementation and full screen support for *some* browsers.
 	 */
-	if (pan.settings.auto_resize) {
+	if (pan.settings.autoResize) {
 
 		// respond to full screen change
 		onFullscreenChange = function () {
 
-			var c = document.getElementById("canvas");
+			var c = document.getElementById('canvas');
 			if (document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen) {
 				// buffer canvas size
-				pan.util.tempSize = { 
-					w: pan.canvas.width, 
+				pan.util.tempSize = {
+					w: pan.canvas.width,
 					h: pan.canvas.height
 				};
 				pan.canvas.width = screen.width;
@@ -117,8 +117,8 @@ var pan = pan || {};
 		};
 
 		// setup listeners in case fullscreen is enabled
-		document.addEventListener("fullscreenchange", onFullscreenChange);
-		document.addEventListener("mozfullscreenchange", onFullscreenChange);
-		document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+		document.addEventListener('fullscreenchange', onFullscreenChange);
+		document.addEventListener('mozfullscreenchange', onFullscreenChange);
+		document.addEventListener('webkitfullscreenchange', onFullscreenChange);
 	}
 }());

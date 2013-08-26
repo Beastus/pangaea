@@ -3,8 +3,10 @@
  *
  * @namespace pan.util
  */
+var pan = pan || {};
+
 (function () {
-	"use strict";
+	'use strict';
 
 	pan.util = pan.util || {};
 
@@ -95,8 +97,8 @@
 		h = h || 32;
 		cx = x;
 		cy = y;
-		c ="rgba(0, 98, 174, 0.75)";
-		bc ="rgba(255, 64, 64, 1)";
+		c ='rgba(0, 98, 174, 0.75)';
+		bc ='rgba(255, 64, 64, 1)';
 
 		// return object
 		return {
@@ -124,13 +126,13 @@
 					bounds = pan.canvas.map.clamp;
 
 					// adjust cx/cy values based on keyboard state
-					if (key === "w") {
+					if (key === 'w') {
 						cy -= rate;
-					} else if (key === "a") {
+					} else if (key === 'a') {
 						cx -= rate;
-					} else if (key === "s") {
+					} else if (key === 's') {
 						cy += rate;
-					} else if (key === "d") {
+					} else if (key === 'd') {
 						cx += rate;
 					}
 
@@ -238,17 +240,17 @@
 				if (code === 16) {
 					pan.util.keyboard.shift = true;
 				} else if (code === 87) {
-					pan.util.keyboard.keydown("w");
+					pan.util.keyboard.keydown('w');
 				} else if (code === 65) {
-					pan.util.keyboard.keydown("a");
+					pan.util.keyboard.keydown('a');
 				} else if (code === 83) {
-					pan.util.keyboard.keydown("s");
+					pan.util.keyboard.keydown('s');
 				} else if (code === 68) {
-					pan.util.keyboard.keydown("d");
+					pan.util.keyboard.keydown('d');
 				}
 				// debug code
-				if (pan.settings.log_key_input) {
-					console.log("keybown.keycode: " + code + "; keyboard: " + 
+				if (pan.settings.logKeyInput) {
+					console.log('keybown.keycode: ' + code + '; keyboard: ' +
 						pan.util.keyboard.toString());
 				}
 			};
@@ -258,17 +260,17 @@
 				if (code === 16) {
 					pan.util.keyboard.shift = false;
 				} else if (code === 87) {
-					pan.util.keyboard.keyup("w");
+					pan.util.keyboard.keyup('w');
 				} else if (code === 65) {
-					pan.util.keyboard.keyup("a");
+					pan.util.keyboard.keyup('a');
 				} else if (code === 83) {
-					pan.util.keyboard.keyup("s");
+					pan.util.keyboard.keyup('s');
 				} else if (code === 68) {
-					pan.util.keyboard.keyup("d");
+					pan.util.keyboard.keyup('d');
 				}
 				// debug code
-				if (pan.settings.log_key_input) {
-					console.log("keyup.keycode: " + code + "; keyboard: " + 
+				if (pan.settings.logKeyInput) {
+					console.log('keyup.keycode: ' + code + '; keyboard: ' +
 						pan.util.keyboard.toString());
 				}
 			};
@@ -283,7 +285,7 @@
 		 * @method
 		 */
 		toString: function () {
-			return "[stack.length:" + this.stack.length + ",shift:" + this.shift + "]";
+			return '[stack.length:' + this.stack.length + ',shift:' + this.shift + ']';
 		}
 	};
 

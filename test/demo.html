@@ -14,18 +14,18 @@
 			Pangaea is a simple 2D tile renderer created as an experimental step toward a 2D game engine.
 		</div>
 
-		<div id="canvas_container">
+		<div id="canvasContainer">
 		</div>
 
 		<div id="options" style="display: none;">
 			<fieldset id="flags">
 				<legend></legend>
-				<input type="checkbox" id="check1" /><label for="check1">enable_player</label>
-				<input type="checkbox" id="check2" /><label for="check2">draw_fps</label>
-				<input type="checkbox" id="check3" /><label for="check3">hit_testing</label>
-				<input type="checkbox" id="check4" /><label for="check4">draw_hit_regions</label>
-				<input type="checkbox" id="check5" /><label for="check5">log_key_input</label>
-				<button id="buttonFullscreen">full_screen</button>
+				<input type="checkbox" id="check1" /><label for="check1">enablePlayer</label>
+				<input type="checkbox" id="check2" /><label for="check2">drawFps</label>
+				<input type="checkbox" id="check3" /><label for="check3">hitTesting</label>
+				<input type="checkbox" id="check4" /><label for="check4">drawHitRegions</label>
+				<input type="checkbox" id="check5" /><label for="check5">logKeyInput</label>
+				<button id="buttonFullscreen">fullScreen</button>
 			</fieldset>
 		</div>
 
@@ -58,25 +58,25 @@
 			};
 
 			// specify initial settings (cookie will override--see below)
-			pan.settings.enable_player = true;
+			pan.settings.enablePlayer = true;
 
 			// attach canvas
-			pan.canvas.attach("canvas_container", onupdate, onrender);
+			pan.canvas.attach("canvasContainer", onupdate, onrender);
 
 			// bind keyboard events
 			pan.util.keyboard.bind();
 
 
+			// specify test map/atlas json here
 			var 
-			//mapJSON = autumnMapJSON,
-			//atlasJSON = autumnAtlasJSON,
-			mapJSON = houseMapJSON,
-			atlasJSON = houseAtlasJSON,
+			mapJSON = autumnMapJSON,
+			atlasJSON = autumnAtlasJSON,
+			//mapJSON = houseMapJSON,
+			//atlasJSON = houseAtlasJSON,
 			atlasReady;
 
 
-			// TEST CODE: load atlas from json
-			//pan.loadAtlasAsync(JSON.parse(atlasJSON), 
+			// load atlas json
 			pan.loadAtlasAsync(JSON.parse(atlasJSON), 
 				function (atlas) {
 					if (atlas) {
@@ -84,7 +84,7 @@
 					}
 					atlasReady = true;
 
-					// TEST CODE: load map from json
+					// load map json
 					pan.canvas.loadMap(JSON.parse(mapJSON));
 
 					// start animation loop
@@ -99,11 +99,11 @@
 			// debug flags checkbox set
 			$("#flags :checkbox").click(function () {
 				var checkstate = $("#flags").find("input:checkbox");
-				pan.settings.enable_player = checkstate[0].checked;
-				pan.settings.draw_fps = checkstate[1].checked;
-				pan.settings.enable_hit_testing = checkstate[2].checked;
-				pan.settings.draw_hit_regions = checkstate[3].checked;
-				pan.settings.log_key_input = checkstate[4].checked;
+				pan.settings.enablePlayer = checkstate[0].checked;
+				pan.settings.drawFps = checkstate[1].checked;
+				pan.settings.enableHitTesting = checkstate[2].checked;
+				pan.settings.drawHitRegions = checkstate[3].checked;
+				pan.settings.logKeyInput = checkstate[4].checked;
 
 				// persist current settings
 				saveAllSettings();
@@ -144,30 +144,30 @@
 			//
 
 			loadAllSettings = function () {
-				if (loadSetting("enable_player") !== undefined) {
-					pan.settings.enable_player = loadSetting("enable_player") === "true";
-					pan.settings.draw_fps = loadSetting("draw_fps") === "true";
-					pan.settings.enable_hit_testing = loadSetting("enable_hit_testing") === "true";
-					pan.settings.draw_hit_regions = loadSetting("draw_hit_regions") === "true";
-					pan.settings.log_key_input = loadSetting("log_key_input") === "true";
+				if (loadSetting("enablePlayer") !== undefined) {
+					pan.settings.enablePlayer = loadSetting("enablePlayer") === "true";
+					pan.settings.drawFps = loadSetting("drawFps") === "true";
+					pan.settings.enableHitTesting = loadSetting("enableHitTesting") === "true";
+					pan.settings.drawHitRegions = loadSetting("drawHitRegions") === "true";
+					pan.settings.logKeyInput = loadSetting("logKeyInput") === "true";
 				}
 
 				// update form state
 				var checkstate = $("#flags").find("input:checkbox");
-				$(checkstate[0]).attr("checked", pan.settings.enable_player);
-				$(checkstate[1]).attr("checked", pan.settings.draw_fps);
-				$(checkstate[2]).attr("checked", pan.settings.enable_hit_testing);
-				$(checkstate[3]).attr("checked", pan.settings.draw_hit_regions);
-				$(checkstate[4]).attr("checked", pan.settings.log_key_input);
+				$(checkstate[0]).attr("checked", pan.settings.enablePlayer);
+				$(checkstate[1]).attr("checked", pan.settings.drawFps);
+				$(checkstate[2]).attr("checked", pan.settings.enableHitTesting);
+				$(checkstate[3]).attr("checked", pan.settings.drawHitRegions);
+				$(checkstate[4]).attr("checked", pan.settings.logKeyInput);
 				$("#flags").buttonset("refresh");
 			};
 
 			saveAllSettings = function () {
-				saveSetting("enable_player", pan.settings.enable_player);
-				saveSetting("draw_fps", pan.settings.draw_fps);
-				saveSetting("enable_hit_testing", pan.settings.enable_hit_testing);
-				saveSetting("draw_hit_regions", pan.settings.draw_hit_regions);
-				saveSetting("log_key_input", pan.settings.log_key_input);
+				saveSetting("enablePlayer", pan.settings.enablePlayer);
+				saveSetting("drawFps", pan.settings.drawFps);
+				saveSetting("enableHitTesting", pan.settings.enableHitTesting);
+				saveSetting("drawHitRegions", pan.settings.drawHitRegions);
+				saveSetting("logKeyInput", pan.settings.logKeyInput);
 			};
 
 			saveSetting = function (key, value) {

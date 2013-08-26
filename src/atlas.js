@@ -1,8 +1,10 @@
 /**
  * atlas class
  */
+var pan = pan || {};
+
 (function() {
-	"use strict";
+	'use strict';
 
 	/**
 	 * @desc 
@@ -18,13 +20,13 @@
 
 		if (!json) {
 			throw {
-				name: "paramError",
-				message: "Required parameter not supplied."
+				name: 'paramError',
+				message: 'Required parameter not supplied.'
 			};
 		}
 
 		name = json.meta.image;
-		imagePath = "assets/" + name;
+		imagePath = 'assets/' + name;
 
 		// load up image resource
 		image = new Image();
@@ -45,13 +47,13 @@
 
 		if (!json || !onloadCallback) {
 			throw {
-				name: "paramError",
-				message: "Required parameter not supplied."
+				name: 'paramError',
+				message: 'Required parameter not supplied.'
 			};
 		}
 		var image,
 			name = json.meta.image,
-			imagePath = "assets/" + name,
+			imagePath = 'assets/' + name,
 			size = json.meta.size,
 			frames = json.frames;
 

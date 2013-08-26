@@ -6,6 +6,7 @@
  * layers are rendered in FIFO order.
  * 
  */
+var pan = pan || {};
 
 /**
  * pangaea canvas class
@@ -13,7 +14,7 @@
  * @namespace pan.canvas
  */
 (function () {
-	"use strict";
+	'use strict';
 
 	/**
 	 * @class {Object}
@@ -22,7 +23,7 @@
 	pan.canvas = {
 		width: 800,
 		height: 544,
-		backcolor: "#000",
+		backcolor: '#000',
 		context: null,
 		atlases: [],
 		spritesheets: [],
@@ -58,8 +59,8 @@
 
 			if (!json) {
 				throw {
-					name: "paramError",
-					message: "Required parameter not supplied."
+					name: 'paramError',
+					message: 'Required parameter not supplied.'
 				};
 			}
 
@@ -78,12 +79,12 @@
 			// load layers tile data
 			for (i = 0; i < json.layers.length; i++) {
 				pan.canvas.layers.push(new pan.Layer(
-					json.layers[i].data, 
-					json.layers[i].name, 
-					json.layers[i].type, 
-					json.layers[i].x, 
-					json.layers[i].y, 
-					json.layers[i].width, 
+					json.layers[i].data,
+					json.layers[i].name,
+					json.layers[i].type,
+					json.layers[i].x,
+					json.layers[i].y,
+					json.layers[i].width,
 					json.layers[i].height));
 			}
 
@@ -101,11 +102,11 @@
 		attach: function (element, updateCallback, renderCallback) {
 
 			// setup canvas element
-			var canvasElement = document.createElement("canvas");
-			canvasElement.setAttribute("id", "canvas");
-			canvasElement.setAttribute("width", pan.canvas.width);
-			canvasElement.setAttribute("height", pan.canvas.height);
-			pan.canvas.context = canvasElement.getContext("2d");
+			var canvasElement = document.createElement('canvas');
+			canvasElement.setAttribute('id', 'canvas');
+			canvasElement.setAttribute('width', pan.canvas.width);
+			canvasElement.setAttribute('height', pan.canvas.height);
+			pan.canvas.context = canvasElement.getContext('2d');
 			if (!element.appendChild) {
 				element = document.getElementById(element);
 			}
@@ -131,13 +132,13 @@
 
 			// maintain fps diagnostics
 			pan.canvas.last = Date.now();
-			if (pan.settings.draw_fps || pan.settings.debug_init) {
+			if (pan.settings.drawFps || pan.settings.debugInit) {
 				pan.canvas.deltaTimer = new pan.util.DeltaTimer();
 				pan.canvas.deltaTimer.start(60);
 			}
 
 			// create test player
-			if (pan.settings.enable_player || pan.settings.debug_init) {
+			if (pan.settings.enablePlayer || pan.settings.debugInit) {
 				pan.canvas.player = new pan.util.Player(pan.canvas.width / 2 - 16, pan.canvas.height / 2 - 16);
 			}
 
@@ -172,7 +173,7 @@
 		 * @method
 		 */
 		update: function () {
-			var i, key;
+			var i;
 
 			// update each object in layers queue
 			for (i = 0; i < pan.canvas.layers.length; i++) {
@@ -185,12 +186,12 @@
 			}
 
 			// update test player
-			if (pan.settings.enable_player) {
+			if (pan.settings.enablePlayer) {
 				pan.canvas.player.update();
 			}
 
 			// debug code (fps)
-			if (pan.settings.draw_fps) {
+			if (pan.settings.drawFps) {
 				pan.canvas.deltaTimer.ready();
 			}
 		},
@@ -223,7 +224,7 @@
 
 				layer = pan.canvas.layers[x] || {};
 
-				if (layer.type === "tilelayer") {
+				if (layer.type === 'tilelayer') {
 					for (i = 0; i < layer.data.length; i++) {
 
 						// get tile index at position i for lookup from table
@@ -240,9 +241,9 @@
 							ypos = coords.ypos + pan.canvas.map.offsety;
 
 							// only draw tiles that are in the current field of view
-							if (xpos + record.w > pan.canvas.map.offsetx && 
-								xpos < pan.canvas.width && 
-								ypos + record.h > pan.canvas.map.offsety && 
+							if (xpos + record.w > pan.canvas.map.offsetx &&
+								xpos < pan.canvas.width &&
+								ypos + record.h > pan.canvas.map.offsety &&
 								ypos < pan.canvas.height) {
 
 								// draw the atlas tile
@@ -269,16 +270,16 @@
 			}
 
 			// draw test player
-			if (pan.settings.enable_player) {
+			if (pan.settings.enablePlayer) {
 				pan.canvas.player.draw(pan.canvas.context);
 			}
 
 			// debug code (fps)
-			if (pan.settings.draw_fps) {
+			if (pan.settings.drawFps) {
 				// display fps stats
-				pan.canvas.context.font = pan.settings.font_style;
-				pan.canvas.context.fillStyle = pan.settings.font_color;
-				pan.canvas.context.fillText("FPS: " + 
+				pan.canvas.context.font = pan.settings.fontStyle;
+				pan.canvas.context.fillStyle = pan.settings.fontColor;
+				pan.canvas.context.fillText('FPS: ' +
 					pan.canvas.deltaTimer.getFrameRate(), 6, 14);
 			}
 		},
@@ -303,8 +304,8 @@
 	pan.canvas.print = function (text, x, y, font, color) {
 		x = x || 12;
 		y = y || 16;
-		pan.canvas.context.font = font || "10pt Calibri";
-		pan.canvas.context.fillStyle = color || "cyan";
+		pan.canvas.context.font = font || '10pt Calibri';
+		pan.canvas.context.fillStyle = color || 'cyan';
 		pan.canvas.context.fillText(text, x, y);
 	};
 }());

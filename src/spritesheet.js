@@ -4,7 +4,7 @@
  * @namespace pan
  */
 (function() {
-	"use strict";
+	'use strict';
 
 	/**
 	 * @desc synchronously loads sprite sheet from file.
@@ -17,8 +17,8 @@
 
 		if (!filePath) {
 			throw {
-				name: "paramError",
-				message: "Required parameter not supplied."
+				name: 'paramError',
+				message: 'Required parameter not supplied.'
 			};
 		}
 
@@ -40,8 +40,8 @@
 		//
 		if (!filePath || !onloadCallback) {
 			throw {
-				name: "paramError",
-				message: "Required parameter not supplied."
+				name: 'paramError',
+				message: 'Required parameter not supplied.'
 			};
 		}
 		var name = key || filePath,
