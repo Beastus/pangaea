@@ -3,4 +3,5 @@
  *
  * @namespace pan
  */
+var pan = pan || {};
 

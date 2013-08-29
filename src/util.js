@@ -11,6 +11,80 @@ var pan = pan || {};
 	pan.util = pan.util || {};
 
 	/**
+	 * Initializes active utility objects.
+	 * @desc Called on canvas start.
+	 */
+	pan.util.start = function (canvas) {
+
+		// maintain fps diagnostics
+		canvas.last = Date.now();
+		if (pan.settings.drawFps || pan.settings.debugInit) {
+			canvas.deltaTimer = new pan.util.DeltaTimer();
+			canvas.deltaTimer.start(60);
+		}
+
+		// create test player
+		if (pan.settings.enablePlayer || pan.settings.debugInit) {
+			canvas.player = new pan.util.Player(canvas.width / 2 - 16, canvas.height / 2 - 16);
+		}
+
+		// bind keyboard events
+		pan.util.keyboard.bind();
+	};
+
+	pan.util.reset = function (canvas) {
+
+		// maintain fps diagnostics
+		canvas.last = Date.now();
+		if (pan.settings.drawFps || pan.settings.debugInit) {
+			canvas.deltaTimer.start(60);
+		}
+
+		// create test player
+		if (pan.settings.enablePlayer || pan.settings.debugInit) {
+			canvas.player = new pan.util.Player(canvas.width / 2 - 16, canvas.height / 2 - 16);
+		}
+	};
+
+	/**
+	 * Updates active utility objects.
+	 * @desc Called on canvas frame update.
+	 */
+	pan.util.update = function (canvas) {
+
+		// update test player
+		if (pan.settings.enablePlayer) {
+			canvas.player.update();
+		}
+
+		// debug code (fps)
+		if (pan.settings.drawFps) {
+			canvas.deltaTimer.ready();
+		}
+	};
+
+	/**
+	 * Draws active utility objects.
+	 * @desc Called on canvas frame render.
+	 */
+	pan.util.render = function (canvas) {
+
+		// draw test player
+		if (pan.settings.enablePlayer) {
+			canvas.player.draw(canvas.context);
+		}
+
+		// debug code (fps)
+		if (pan.settings.drawFps) {
+			// display fps stats
+			canvas.context.font = pan.settings.fontStyle;
+			canvas.context.fillStyle = pan.settings.fontColor;
+			canvas.context.fillText('FPS: ' +
+				canvas.deltaTimer.getFrameRate(), 6, 14);
+		}
+	};
+
+	/**
 	 * @desc timer used for diagnostic and timing purposes
 	 * @constructor 
 	 * @memberof pan.util

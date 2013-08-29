@@ -100,16 +100,16 @@ var pan = pan || {};
 			var c = document.getElementById('canvas');
 			if (document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen) {
 				// buffer canvas size
-				pan.util.tempSize = {
+				pan.settings.tempSize = {
 					w: pan.canvas.width,
 					h: pan.canvas.height
 				};
 				pan.canvas.width = screen.width;
 				pan.canvas.height = screen.height;
 			} else {
-				if (pan.util.tempSize) {
-					pan.canvas.width = pan.util.tempSize.w;
-					pan.canvas.height = pan.util.tempSize.h;
+				if (pan.settings.tempSize) {
+					pan.canvas.width = pan.settings.tempSize.w;
+					pan.canvas.height = pan.settings.tempSize.h;
 				}
 			}
 			c.width = pan.canvas.width;

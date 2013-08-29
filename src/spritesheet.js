@@ -3,6 +3,8 @@
  *
  * @namespace pan
  */
+var pan = pan || {};
+
 (function() {
 	'use strict';
 
@@ -12,7 +14,7 @@
 	 */
 	pan.loadSpriteSheet = function (key, filePath) {
 		//
-		var image, 
+		var image,
 			spritesheet;
 
 		if (!filePath) {
@@ -37,7 +39,7 @@
 	 * @memberof pan
 	 */
 	pan.loadSpriteSheetAsync = function (key, filePath, onloadCallback) {
-		//
+
 		if (!filePath || !onloadCallback) {
 			throw {
 				name: 'paramError',

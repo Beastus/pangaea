@@ -130,16 +130,9 @@ var pan = pan || {};
 			// preprocess map data
 			pan.canvas.prerender();
 
-			// maintain fps diagnostics
-			pan.canvas.last = Date.now();
-			if (pan.settings.drawFps || pan.settings.debugInit) {
-				pan.canvas.deltaTimer = new pan.util.DeltaTimer();
-				pan.canvas.deltaTimer.start(60);
-			}
-
-			// create test player
-			if (pan.settings.enablePlayer || pan.settings.debugInit) {
-				pan.canvas.player = new pan.util.Player(pan.canvas.width / 2 - 16, pan.canvas.height / 2 - 16);
+			// start possible utility objects
+			if (pan.util) {
+				pan.util.start(pan.canvas);
 			}
 
 			if (!pan.canvas.frameId) {
@@ -154,6 +147,32 @@ var pan = pan || {};
 		 */
 		stop: function () {
 			pan.canvas.ready = false;
+		},
+
+		/**
+		 * @desc unloads map and resets state
+		 * @method
+		 */
+		reset: function () {
+			pan.canvas.stop();
+			pan.canvas.clear();
+			pan.canvas.layers = [];
+			pan.canvas.atlases = [];
+			pan.canvas.tilesets = [];
+			pan.canvas.spritesheets = [];
+			pan.canvas.table = undefined;
+			pan.canvas.map = {
+				tileheight: 0,
+				tilewidth: 0,
+				width: 0,
+				height: 0,
+				offsetx: 0,
+				offsety: 0,
+				clamp: { x: 0, y: 0, w: 0, h: 0 }
+			};
+			if (pan.util) {
+				pan.util.reset(pan.canvas);
+			}
 		},
 
 		/**
@@ -182,17 +201,12 @@ var pan = pan || {};
 
 			// call update callback
 			if (pan.canvas.onupdate) {
-				pan.canvas.onupdate();
+				pan.canvas.onupdate(pan.canvas);
 			}
 
-			// update test player
-			if (pan.settings.enablePlayer) {
-				pan.canvas.player.update();
-			}
-
-			// debug code (fps)
-			if (pan.settings.drawFps) {
-				pan.canvas.deltaTimer.ready();
+			// update possible utility objects
+			if (pan.util) {
+				pan.util.update(pan.canvas);
 			}
 		},
 
@@ -269,18 +283,9 @@ var pan = pan || {};
 				pan.canvas.onrender();
 			}
 
-			// draw test player
-			if (pan.settings.enablePlayer) {
-				pan.canvas.player.draw(pan.canvas.context);
-			}
-
-			// debug code (fps)
-			if (pan.settings.drawFps) {
-				// display fps stats
-				pan.canvas.context.font = pan.settings.fontStyle;
-				pan.canvas.context.fillStyle = pan.settings.fontColor;
-				pan.canvas.context.fillText('FPS: ' +
-					pan.canvas.deltaTimer.getFrameRate(), 6, 14);
+			// rneder possible utility objects
+			if (pan.util) {
+				pan.util.render(pan.canvas);
 			}
 		},
 
