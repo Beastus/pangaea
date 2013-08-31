@@ -315,7 +315,7 @@ var pan = pan || {};
 	pan.canvas.print = function (text, x, y, font, color) {
 		x = x || 12;
 		y = y || 16;
-		pan.canvas.context.font = font || '10pt Calibri';
+		pan.canvas.context.font = font || '10pt "Courier New", Courier, monospace';
 		pan.canvas.context.fillStyle = color || 'cyan';
 		pan.canvas.context.fillText(text, x, y);
 	};

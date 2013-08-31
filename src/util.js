@@ -196,7 +196,7 @@ var pan = pan || {};
 			/**
 			 * @desc base movement speed (pixels per update)
 			 */
-			speed: 3,
+			speed: 2,
 
 			/**
 			 * @desc updates player state based on pan.util.keyboard state

@@ -30,7 +30,7 @@ var pan = pan || {};
 		'fontColor': 'cyan',
 
 		// the font definition of diagnostic text
-		'fontStyle': '13px "Calibri","Courier"',
+		'fontStyle': '12px "Courier New", Courier, monospace',
 
 		// enables hit testing
 		'enableHitTesting': false,
