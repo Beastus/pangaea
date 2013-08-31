@@ -38,6 +38,9 @@ var pan = pan || {};
 		// draw outline of hit test regions
 		'drawHitRegions': false,
 
+		// draw light ellipses
+		'drawLights': true,
+
 		// write keyboard activity to console.log
 		'logKeyInput': false,
 
@@ -48,10 +51,11 @@ var pan = pan || {};
 			return '[debugInit:' + this.debugInit +
 				',enablePlayer:' + this.enablePlayer +
 				',drawFps:' + this.drawFps +
-				',drawColor:' + this.drawColor +
+				',fontColor:' + this.fontColor +
 				',fontStyle:' + this.fontStyle +
 				',enableHitTesting:' + this.enableHitTesting +
 				',drawHitRegions:' + this.drawHitRegions +
+				',drawLights:' + this.drawLights +
 				',logKeyInput:' + this.logKeyInput +
 				',autoResize:' + this.autoResize +
 				']';

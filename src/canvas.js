@@ -29,6 +29,8 @@ var pan = pan || {};
 		spritesheets: [],
 		layers: [],
 		tilesets: [],
+		lights: [],
+		hitRegions: [],
 		map: {
 			tileheight: 0,
 			tilewidth: 0,
@@ -85,7 +87,8 @@ var pan = pan || {};
 					json.layers[i].x,
 					json.layers[i].y,
 					json.layers[i].width,
-					json.layers[i].height));
+					json.layers[i].height,
+					json.layers[i].objects));
 			}
 
 			// load associated tilesets
@@ -155,12 +158,13 @@ var pan = pan || {};
 		 */
 		reset: function () {
 			pan.canvas.stop();
-			pan.canvas.clear();
 			pan.canvas.layers = [];
 			pan.canvas.atlases = [];
 			pan.canvas.tilesets = [];
 			pan.canvas.spritesheets = [];
 			pan.canvas.table = undefined;
+			pan.canvas.lights = [];
+			pan.canvas.hitRegions = [];
 			pan.canvas.map = {
 				tileheight: 0,
 				tilewidth: 0,
@@ -277,6 +281,8 @@ var pan = pan || {};
 				}
 			}
 
+			// draw lights
+			// TODO: make it so
 
 			// call render callback
 			if (pan.canvas.onrender) {
@@ -312,5 +318,33 @@ var pan = pan || {};
 		pan.canvas.context.font = font || '10pt Calibri';
 		pan.canvas.context.fillStyle = color || 'cyan';
 		pan.canvas.context.fillText(text, x, y);
+	};
+
+	/**
+	 * Draws current map rect hit regions.
+	 *
+	 * @param {string} borderColor stroke color
+	 * @param {string} fillColor fill color
+	 */
+	pan.canvas.drawHitRegions = function (borderColor, fillColor) {
+		var i,
+			r,
+			bc = borderColor || 'red',
+			fc = fillColor || 'rgba(255, 0, 0, 0.1)';
+		pan.canvas.context.beginPath();
+		for (i = 0; i < pan.canvas.hitRegions.length; i++) {
+			// draw hit region
+			r = pan.canvas.hitRegions[i];
+			pan.canvas.context.rect(
+				r.x + pan.canvas.map.offsetx,
+				r.y + pan.canvas.map.offsety,
+				r.w,
+				r.h);
+		}
+		pan.canvas.context.fillStyle = fc;
+		pan.canvas.context.fill();
+		pan.canvas.context.strokeStyle = bc;
+		pan.canvas.context.stroke();
+		pan.canvas.context.closePath();
 	};
 }());

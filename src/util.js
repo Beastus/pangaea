@@ -32,6 +32,9 @@ var pan = pan || {};
 		pan.util.keyboard.bind();
 	};
 
+	/**
+	 * Resets timer internal state and restarts.
+	 */
 	pan.util.reset = function (canvas) {
 
 		// maintain fps diagnostics
@@ -69,6 +72,13 @@ var pan = pan || {};
 	 */
 	pan.util.render = function (canvas) {
 
+		// draw hit regions
+		if (pan.settings.drawHitRegions) {
+			if (pan.canvas.drawHitRegions) {
+				pan.canvas.drawHitRegions();
+			}
+		}
+
 		// draw test player
 		if (pan.settings.enablePlayer) {
 			canvas.player.draw(canvas.context);
@@ -85,7 +95,7 @@ var pan = pan || {};
 	};
 
 	/**
-	 * @desc timer used for diagnostic and timing purposes
+	 * @desc Timer used for diagnostic and timing purposes.
 	 * @constructor 
 	 * @memberof pan.util
 	 */
@@ -96,8 +106,8 @@ var pan = pan || {};
 		return {
 
 			/**
-			 * @desc initializes the timer
-			 * @param {Number} fps target frames per second
+			 * @desc Initializes the timer.
+			 * @param {Number} fps Target frames per second.
 			 * @method
 			 */
 			start: function (fps) {
@@ -107,9 +117,10 @@ var pan = pan || {};
 			},
 
 			/**
-			 * @desc performs diagnostic timer calculations
+			 * @desc Performs diagnostic timer calculations.
 			 * @method
-			 * @returns {Boolean} true if current cycle is compatible with target frame rate
+			 * @returns {Boolean} Returns true if current cycle is compatible
+			 * with target frame rate.
 			 */
 			ready: function () {
 				var diff = (new Date().getTime() - last) + overflow;
@@ -139,9 +150,9 @@ var pan = pan || {};
 			},
 
 			/**
-			 * @desc gets calculated frame rate
+			 * @desc Gets calculated frame rate.
 			 * @method
-			 * @returns {Number} current frames per second average
+			 * @returns {Number} Current frames per second average.
 			 */
 			getFrameRate: function () {
 				return Math.round(frameRate * 1000, 10) / 1000;
@@ -150,15 +161,15 @@ var pan = pan || {};
 	};
 
 	/**
-	 * @desc a very simplified player object for prototyping and debug purposes
+	 * @desc Simple player object for prototyping and debug purposes.
 	 * @constructor 
 	 * @memberof pan.util
-	 * @param {Number} x the x-coordinate of the player in pixels
-	 * @param {Number} y the y-coordinate of the player in pixels
-	 * @param {Number} w the width of the player in pixels
-	 * @param {Number} h the height of the player in pixels
-	 * @param {String} c color of the player sprite
-	 * @returns A player object
+	 * @param {Number} x The x-coordinate of the player in pixels.
+	 * @param {Number} y The y-coordinate of the player in pixels.
+	 * @param {Number} w The width of the player in pixels.
+	 * @param {Number} h The height of the player in pixels.
+	 * @param {String} c Color of the player sprite.
+	 * @returns A player object.
 	 */
 	pan.util.Player = function (x, y, w, h) {
 
@@ -192,12 +203,11 @@ var pan = pan || {};
 			 * @method
 			 */
 			update: function () {
-				var key, rate, bounds;
+				var key, rate, bounds, i, region, buffer = {x: cx, y: cy};
 				if (pan.util.keyboard.stack.length > 0) {
 					//
 					rate = pan.util.keyboard.shift ? this.speed * 2 : this.speed;
 					key = pan.util.keyboard.peek();
-					bounds = pan.canvas.map.clamp;
 
 					// adjust cx/cy values based on keyboard state
 					if (key === 'w') {
@@ -210,10 +220,27 @@ var pan = pan || {};
 						cx += rate;
 					}
 
+					if (cx === buffer.x && cy === buffer.y) {
+						return;
+					}
+
 					cx = cx.clamp(0, (pan.canvas.map.width * 32) - w);
 					cy = cy.clamp(0, (pan.canvas.map.height * 32) - h);
 
+					if (pan.settings.enableHitTesting) {
+						// do not update if hit test fails
+						for (i = 0; i < pan.canvas.hitRegions.length; i++) {
+							region = pan.canvas.hitRegions[i];
+							if (this.hitTest(region, cx, cy, cx + w, cy + h)) {
+								cx = buffer.x;
+								cy = buffer.y;
+								return false;
+							}
+						}
+					}
+
 					// move player sprite or map depending on map bounds
+					bounds = pan.canvas.map.clamp;
 					if (cx >= bounds.x && cx <= bounds.w) {
 						pan.canvas.map.offsetx = -(cx - bounds.x);
 						x = bounds.x;
@@ -244,6 +271,14 @@ var pan = pan || {};
 				context.fillStyle = this.color;
 				context.fill();
 				context.closePath();
+			},
+
+			/**
+			 * @desc returns true if player intersects parameters
+			 * @method
+			 */
+			hitTest: function (region, left, top, right, bottom) {
+				return (region.x < right) && ((region.x + region.w) > left) && (region.y < bottom) && ((region.y + region.h) > top);
 			}
 		};
 	};

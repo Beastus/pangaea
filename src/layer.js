@@ -12,7 +12,7 @@ var pan = pan || {};
 	 * @constructor 
 	 * @memberof pan
 	 */
-	pan.Layer = function (data, name, type, left, top, width, height) {
+	pan.Layer = function (data, name, type, left, top, width, height, objects) {
 
 		var map = pan.canvas.map;
 
@@ -24,6 +24,7 @@ var pan = pan || {};
 		this.width = width || map.width;
 		this.height = height || map.height;
 		this.coords = [];
+		this.objects = objects || [];
 	};
 
 
@@ -99,6 +100,40 @@ var pan = pan || {};
 					w: tileset.tilewidth,
 					h: tileset.tileheight
 				};
+			}
+		} else {
+
+			// process non-tile layers
+			if (this.name === 'lights') {
+
+				// load light objects
+				this.type = 'lights';
+				for (i = 0; i < this.objects.length; i++) {
+					frame = this.objects[i];
+					if (frame.ellipse && frame.visible) {
+						pan.canvas.lights.push({
+							x: frame.x,
+							y: frame.y,
+							w: frame.width,
+							h: frame.height
+						});
+					}
+				}
+			} else if (this.name === 'hittest') {
+
+				// load hit test objects
+				this.type = 'hittest';
+				for (i = 0; i < this.objects.length; i++) {
+					frame = this.objects[i];
+					if (frame.visible) {
+						pan.canvas.hitRegions.push({
+							x: frame.x,
+							y: frame.y,
+							w: frame.width,
+							h: frame.height
+						});
+					}
+				}
 			}
 		}
 	};
