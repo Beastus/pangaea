@@ -242,41 +242,45 @@ var pan = pan || {};
 
 				layer = pan.canvas.layers[x] || {};
 
-				if (layer.type === 'tilelayer') {
-					for (i = 0; i < layer.data.length; i++) {
+				if (layer.type !== 'tilelayer') {
+					continue;
+				}
 
-						// get tile index at position i for lookup from table
-						tileIndex = layer.data[i];
-						// get buffered base coordinates
-						coords = layer.coords[i];
+				for (i = 0; i < layer.data.length; i++) {
 
-						// draw from buffered tile table
-						if (tileIndex > 0 && coords) {
-							record = pan.canvas.table[tileIndex];
+					// get tile index at position i for lookup from table
+					tileIndex = layer.data[i];
+					// get buffered base coordinates
+					coords = layer.coords[i];
 
-							// apply current map offsets
-							xpos = coords.xpos + pan.canvas.map.offsetx;
-							ypos = coords.ypos + pan.canvas.map.offsety;
+					// draw from buffered tile table
+					if (tileIndex === 0 || !coords) {
+						continue;
+					}
 
-							// only draw tiles that are in the current field of view
-							if (xpos + record.w > pan.canvas.map.offsetx &&
-								xpos < pan.canvas.width &&
-								ypos + record.h > pan.canvas.map.offsety &&
-								ypos < pan.canvas.height) {
+					record = pan.canvas.table[tileIndex];
 
-								// draw the atlas tile
-								pan.canvas.context.drawImage(
-									pan.canvas.atlases[record.aindex].image,
-									record.srcx,
-									record.srcy,
-									record.w,
-									record.h,
-									xpos,
-									ypos,
-									record.w,
-									record.h);
-							}
-						}
+					// apply current map offsets
+					xpos = coords.xpos + pan.canvas.map.offsetx;
+					ypos = coords.ypos + pan.canvas.map.offsety;
+
+					// only draw tiles that are in the current field of view
+					if (xpos + record.w > pan.canvas.map.offsetx &&
+						xpos < pan.canvas.width &&
+						ypos + record.h > pan.canvas.map.offsety &&
+						ypos < pan.canvas.height) {
+
+						// draw the atlas tile
+						pan.canvas.context.drawImage(
+							pan.canvas.atlases[record.aindex].image,
+							record.srcx,
+							record.srcy,
+							record.w,
+							record.h,
+							xpos,
+							ypos,
+							record.w,
+							record.h);
 					}
 				}
 			}
