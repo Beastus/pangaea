@@ -1,18 +1,10 @@
 
-/*
- * note: canvas contains layers, layers can contain sprites or tiles, 
- * tiles reference positions on an atlas, sprites reference positions
- * on a sprite sheet.
- * layers are rendered in FIFO order.
- * 
- */
-var pan = pan || {};
-
 /**
  * pangaea canvas class
  *
  * @namespace pan.canvas
  */
+
 (function () {
 	'use strict';
 

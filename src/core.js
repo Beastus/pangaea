@@ -8,8 +8,6 @@ var pan = pan || {};
 (function () {
 	'use strict';
 
-	pan.version = '@@version';
-
 	/**
 	 * @namespace pan.settings
 	 * @class {Object}

@@ -2,9 +2,7 @@
  * pangaea layer class
  *
  */
-var pan = pan || {};
-
-(function() {
+(function () {
 	'use strict';
 
 	/**

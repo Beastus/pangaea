@@ -3,7 +3,6 @@
  *
  * @namespace pan.util
  */
-var pan = pan || {};
 
 (function () {
 	'use strict';

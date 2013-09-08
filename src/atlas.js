@@ -1,9 +1,8 @@
 /**
  * atlas class
  */
-var pan = pan || {};
 
-(function() {
+(function () {
 	'use strict';
 
 	/**
