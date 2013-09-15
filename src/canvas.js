@@ -225,11 +225,23 @@
 		 * @method
 		 */
 		render: function () {
-			var x, i, layer, tileIndex, record, coords, xpos, ypos;
+			var x,
+				i,
+				layer,
+				tileIndex,
+				record,
+				coords,
+				xpos,
+				ypos,
+				// make local var versions for speed
+				width = pan.canvas.width,
+				height = pan.canvas.height,
+				offsetx = pan.canvas.map.offsetx,
+				offsety = pan.canvas.map.offsety;
+
 			pan.canvas.clear();
 
 			// draw all layers
-			//for (x = 0; x < 1; x++) {
 			for (x = 0; x < pan.canvas.layers.length; x++) {
 
 				layer = pan.canvas.layers[x] || {};
@@ -253,14 +265,14 @@
 					record = pan.canvas.table[tileIndex];
 
 					// apply current map offsets
-					xpos = coords.xpos + pan.canvas.map.offsetx;
-					ypos = coords.ypos + pan.canvas.map.offsety;
+					xpos = coords.xpos + offsetx;
+					ypos = coords.ypos + offsety;
 
 					// only draw tiles that are in the current field of view
-					if (xpos + record.w > pan.canvas.map.offsetx &&
-						xpos < pan.canvas.width &&
-						ypos + record.h > pan.canvas.map.offsety &&
-						ypos < pan.canvas.height) {
+					if (xpos + record.w > offsetx &&
+						xpos < width &&
+						ypos + record.h > offsety &&
+						ypos < height) {
 
 						// draw the atlas tile
 						pan.canvas.context.drawImage(
