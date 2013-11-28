@@ -1,8 +1,10 @@
 pangaea
 =======
 
-Fiddling around with canvas-based 2D tile rendering.
+Some crude fiddling with 2d graphics-related tools.
 
+Half-baked demo viewable here:
+http://areologist.com/pangaea/demo.html
 
 Demo maps created as follows:
 
@@ -15,5 +17,3 @@ Demo maps created as follows:
 	6. Minify the JSON.
 
 TexturePacker JSON file and .tmx export JSON file loaded and preprocessed to internal data structures.
-
-Note: This project is a quick and dirty JS experiment and exploration of some tools. There are a number of legit 2D HTML5/JavaScript rendering engines on github and elsewhere. This is not one of them.
