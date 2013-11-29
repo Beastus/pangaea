@@ -45,15 +45,20 @@
 	 * @desc Precomputes tile mappings for fast rendering.
 	 */
 	pan.Layer.prototype.prerender = function () {
-		var map = pan.canvas.map,
+		var canvas = pan.canvas,
+			map = canvas.map,
+			tilesets = canvas.tilesets,
+			atlases = canvas.atlases,
+			table = canvas.table,
 			i, x, y,
+			len,
 			tileIndex, tileset,
 			atlas, atlasindex,
 			frame,
 			length;
 
 		if (this.type === 'tilelayer') {
-			for (i = 0; i < this.data.length; i++) {
+			for (i = 0, len = this.data.length; i < len; i++) {
 				// get tile index at position i
 				tileIndex = this.data[i];
 
@@ -62,17 +67,17 @@
 				}
 
 				// get tileset
-				for (x = pan.canvas.tilesets.length; x >= 0;x) {
+				for (x = tilesets.length; x >= 0;x) {
 					x--;
-					if (pan.canvas.tilesets[x].firstgid <= tileIndex) {
-						tileset = pan.canvas.tilesets[x];
+					if (tilesets[x].firstgid <= tileIndex) {
+						tileset = tilesets[x];
 						x = -1;
 					}
 				}
 
 				// lookup atlas
-				for (y = 0; y < pan.canvas.atlases.length; y++) {
-					atlas = pan.canvas.atlases[y];
+				for (y = 0; y < atlases.length; y++) {
+					atlas = atlases[y];
 					atlasindex = y;
 
 					// lookup frame by name
@@ -87,11 +92,11 @@
 
 				if (!pan.canvas.table) {
 					length = Math.ceil((this.width / map.tilewidth) * (this.height / map.tileheight));
-					pan.canvas.table = [length];
+					table = pan.canvas.table = [length];
 				}
 
 				// cache precalculated atlas index and source coordinates
-				pan.canvas.table[tileIndex] = {
+				table[tileIndex] = {
 					aindex: 0,
 					srcx: frame.srcx,
 					srcy: frame.srcy,
@@ -109,7 +114,7 @@
 				for (i = 0; i < this.objects.length; i++) {
 					frame = this.objects[i];
 					if (frame.ellipse && frame.visible) {
-						pan.canvas.lights.push({
+						canvas.lights.push({
 							x: frame.x,
 							y: frame.y,
 							w: frame.width,
@@ -124,7 +129,7 @@
 				for (i = 0; i < this.objects.length; i++) {
 					frame = this.objects[i];
 					if (frame.visible) {
-						pan.canvas.hitRegions.push({
+						canvas.hitRegions.push({
 							x: frame.x,
 							y: frame.y,
 							w: frame.width,
@@ -171,10 +176,14 @@
 	 * @desc Searches atlas frames by key and returns first match.
 	 */
 	pan.Layer.prototype.selectFrame = function (atlas, key) {
-		var z;
-		for (z = 0; z < atlas.frames.length; z++) {
-			if (atlas.frames[z].filename === key) {
-				return atlas.frames[z];
+
+		var z,
+			len,
+			frames = atlas.frames;
+
+		for (z = 0, len = frames.length; z < len; z++) {
+			if (frames[z].filename === key) {
+				return frames[z];
 			}
 		}
 		return null;

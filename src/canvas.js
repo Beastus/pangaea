@@ -49,7 +49,12 @@
 		 */
 		loadMap: function (json) {
 
-			var i;
+			var i,
+				len,
+				canvas = pan.canvas,
+				map = canvas.map,
+				clamp = map.clamp,
+				layers = canvas.layers;
 
 			if (!json) {
 				throw {
@@ -59,20 +64,20 @@
 			}
 
 			// update map object
-			pan.canvas.map.tilewidth = json.tilewidth;
-			pan.canvas.map.tileheight = json.tileheight;
-			pan.canvas.map.width = json.width;
-			pan.canvas.map.height = json.height;
+			map.tilewidth = json.tilewidth;
+			map.tileheight = json.tileheight;
+			map.width = json.width;
+			map.height = json.height;
 
 			// precompute map clamp values
-			pan.canvas.map.clamp.x = pan.canvas.width / 2;
-			pan.canvas.map.clamp.y = pan.canvas.height / 2;
-			pan.canvas.map.clamp.w = (pan.canvas.map.width * pan.canvas.map.tilewidth) - pan.canvas.map.clamp.x;
-			pan.canvas.map.clamp.h = (pan.canvas.map.height * pan.canvas.map.tileheight) - pan.canvas.map.clamp.y;
+			clamp.x = canvas.width / 2;
+			clamp.y = canvas.height / 2;
+			clamp.w = (map.width * map.tilewidth) - map.clamp.x;
+			clamp.h = (map.height * map.tileheight) - map.clamp.y;
 
 			// load layers tile data
-			for (i = 0; i < json.layers.length; i++) {
-				pan.canvas.layers.push(new pan.Layer(
+			for (i = 0, len = json.layers.length; i < len; i++) {
+				layers.push(new pan.Layer(
 					json.layers[i].data,
 					json.layers[i].name,
 					json.layers[i].type,
@@ -84,7 +89,7 @@
 			}
 
 			// load associated tilesets
-			pan.canvas.tilesets = json.tilesets;
+			canvas.tilesets = json.tilesets;
 		},
 
 		/**
@@ -97,11 +102,13 @@
 		attach: function (element, updateCallback, renderCallback) {
 
 			// setup canvas element
-			var canvasElement = document.createElement('canvas');
+			var canvasElement = document.createElement('canvas'),
+				canvas = pan.canvas;
+
 			canvasElement.setAttribute('id', 'canvas');
-			canvasElement.setAttribute('width', pan.canvas.width);
-			canvasElement.setAttribute('height', pan.canvas.height);
-			pan.canvas.context = canvasElement.getContext('2d');
+			canvasElement.setAttribute('width', canvas.width);
+			canvasElement.setAttribute('height', canvas.height);
+			canvas.context = canvasElement.getContext('2d');
 			if (!element.appendChild) {
 				element = document.getElementById(element);
 			}
@@ -109,10 +116,10 @@
 
 			// set callbacks
 			if (updateCallback) {
-				pan.canvas.onupdate = updateCallback;
+				canvas.onupdate = updateCallback;
 			}
 			if (renderCallback) {
-				pan.canvas.onrender = renderCallback;
+				canvas.onrender = renderCallback;
 			}
 		},
 
@@ -122,17 +129,19 @@
 		 */
 		start: function () {
 
+			var canvas = pan.canvas;
+
 			// preprocess map data
-			pan.canvas.prerender();
+			canvas.prerender();
 
 			// start possible utility objects
 			if (pan.util) {
-				pan.util.start(pan.canvas);
+				pan.util.start(canvas);
 			}
 
-			if (!pan.canvas.frameId) {
+			if (!canvas.frameId) {
 				// start animation
-				pan.canvas.frame();
+				canvas.frame();
 			}
 		},
 
@@ -149,15 +158,17 @@
 		 * @method
 		 */
 		reset: function () {
-			pan.canvas.stop();
-			pan.canvas.layers = [];
-			pan.canvas.atlases = [];
-			pan.canvas.tilesets = [];
-			pan.canvas.spritesheets = [];
-			pan.canvas.table = undefined;
-			pan.canvas.lights = [];
-			pan.canvas.hitRegions = [];
-			pan.canvas.map = {
+
+			var canvas = pan.canvas;
+			canvas.stop();
+			canvas.layers = [];
+			canvas.atlases = [];
+			canvas.tilesets = [];
+			canvas.spritesheets = [];
+			canvas.table = null;
+			canvas.lights = [];
+			canvas.hitRegions = [];
+			canvas.map = {
 				tileheight: 0,
 				tilewidth: 0,
 				width: 0,
@@ -167,7 +178,7 @@
 				clamp: { x: 0, y: 0, w: 0, h: 0 }
 			};
 			if (pan.util) {
-				pan.util.reset(pan.canvas);
+				pan.util.reset(canvas);
 			}
 		},
 
@@ -176,11 +187,14 @@
 		 * @method
 		 */
 		frame: function () {
-			if (pan.canvas.ready) {
-				pan.canvas.update();
-				pan.canvas.render();
+
+			var canvas = pan.canvas;
+
+			if (canvas.ready) {
+				canvas.update();
+				canvas.render();
 			}
-			pan.canvas.frameId = window.requestAnimationFrame(pan.canvas.frame);
+			canvas.frameId = window.requestAnimationFrame(canvas.frame);
 		},
 
 		/**
@@ -188,21 +202,24 @@
 		 * @method
 		 */
 		update: function () {
-			var i;
+			var i,
+				len,
+				canvas = pan.canvas,
+				layers = canvas.layers;
 
 			// update each object in layers queue
-			for (i = 0; i < pan.canvas.layers.length; i++) {
-				pan.canvas.layers[i].update();
+			for (i = 0, len = layers.length; i < len; i++) {
+				layers[i].update();
 			}
 
 			// call update callback
-			if (pan.canvas.onupdate) {
-				pan.canvas.onupdate(pan.canvas);
+			if (canvas.onupdate) {
+				canvas.onupdate(canvas);
 			}
 
 			// update possible utility objects
 			if (pan.util) {
-				pan.util.update(pan.canvas);
+				pan.util.update(canvas);
 			}
 		},
 
@@ -211,9 +228,13 @@
 		 * @method
 		 */
 		prerender: function () {
-			var i;
-			for (i = 0; i < pan.canvas.layers.length; i++) {
-				pan.canvas.layers[i].prerender();
+
+			var i,
+				len,
+				layers = pan.canvas.layers;
+
+			for (i = 0, len = layers.length; i < len; i++) {
+				layers[i].prerender();
 			}
 
 			// mark canvas as ready
@@ -227,30 +248,34 @@
 		render: function () {
 			var x,
 				i,
+				len,
+				dlen,
 				layer,
 				tileIndex,
 				record,
 				coords,
 				xpos,
 				ypos,
-				// make local var versions for speed
+				canvas = pan.canvas,
+				layers = canvas.layers,
+				table = canvas.table,
 				width = pan.canvas.width,
 				height = pan.canvas.height,
 				offsetx = pan.canvas.map.offsetx,
 				offsety = pan.canvas.map.offsety;
 
-			pan.canvas.clear();
+			canvas.clear();
 
 			// draw all layers
-			for (x = 0; x < pan.canvas.layers.length; x++) {
+			for (x = 0, len = layers.length; x < len; x++) {
 
-				layer = pan.canvas.layers[x] || {};
+				layer = layers[x] || {};
 
 				if (layer.type !== 'tilelayer') {
 					continue;
 				}
 
-				for (i = 0; i < layer.data.length; i++) {
+				for (i = 0, dlen = layer.data.length; i < dlen; i++) {
 
 					// get tile index at position i for lookup from table
 					tileIndex = layer.data[i];
@@ -262,7 +287,7 @@
 						continue;
 					}
 
-					record = pan.canvas.table[tileIndex];
+					record = table[tileIndex];
 
 					// apply current map offsets
 					xpos = coords.xpos + offsetx;
@@ -275,8 +300,8 @@
 						ypos < height) {
 
 						// draw the atlas tile
-						pan.canvas.context.drawImage(
-							pan.canvas.atlases[record.aindex].image,
+						canvas.context.drawImage(
+							canvas.atlases[record.aindex].image,
 							record.srcx,
 							record.srcy,
 							record.w,
@@ -293,13 +318,13 @@
 			// TODO: make it so
 
 			// call render callback
-			if (pan.canvas.onrender) {
-				pan.canvas.onrender();
+			if (canvas.onrender) {
+				canvas.onrender();
 			}
 
 			// rneder possible utility objects
 			if (pan.util) {
-				pan.util.render(pan.canvas);
+				pan.util.render(canvas);
 			}
 		},
 
@@ -308,8 +333,11 @@
 		 * @method
 		 */
 		clear: function () {
-			pan.canvas.context.fillStyle = pan.canvas.backcolor;
-			pan.canvas.context.fillRect(0, 0, pan.canvas.width, pan.canvas.height);
+
+			var canvas = pan.canvas,
+				context = pan.canvas.context;
+			context.fillStyle = canvas.backcolor;
+			context.fillRect(0, 0, canvas.width, canvas.height);
 		}
 	};
 
@@ -321,11 +349,14 @@
 	 * @param {number} y coord for text
 	 */
 	pan.canvas.print = function (text, x, y, font, color) {
+
+		var context = pan.canvas.context;
+
 		x = x || 12;
 		y = y || 16;
-		pan.canvas.context.font = font || '10pt "Courier New", Courier, monospace';
-		pan.canvas.context.fillStyle = color || 'cyan';
-		pan.canvas.context.fillText(text, x, y);
+		context.font = font || '10pt "Courier New", Courier, monospace';
+		context.fillStyle = color || 'cyan';
+		context.fillText(text, x, y);
 	};
 
 	/**
@@ -335,24 +366,31 @@
 	 * @param {string} fillColor fill color
 	 */
 	pan.canvas.drawHitRegions = function (borderColor, fillColor) {
+
 		var i,
+			len,
 			r,
 			bc = borderColor || 'red',
-			fc = fillColor || 'rgba(255, 0, 0, 0.1)';
-		pan.canvas.context.beginPath();
-		for (i = 0; i < pan.canvas.hitRegions.length; i++) {
+			fc = fillColor || 'rgba(255, 0, 0, 0.1)',
+			canvas = pan.canvas,
+			context = canvas.context,
+			regions = canvas.hitRegions,
+			map = canvas.map;
+
+		context.beginPath();
+		for (i = 0, len = regions.length; i < len; i++) {
 			// draw hit region
-			r = pan.canvas.hitRegions[i];
-			pan.canvas.context.rect(
-				r.x + pan.canvas.map.offsetx,
-				r.y + pan.canvas.map.offsety,
+			r = regions[i];
+			context.rect(
+				r.x + map.offsetx,
+				r.y + map.offsety,
 				r.w,
 				r.h);
 		}
-		pan.canvas.context.fillStyle = fc;
-		pan.canvas.context.fill();
-		pan.canvas.context.strokeStyle = bc;
-		pan.canvas.context.stroke();
-		pan.canvas.context.closePath();
+		context.fillStyle = fc;
+		context.fill();
+		context.strokeStyle = bc;
+		context.stroke();
+		context.closePath();
 	};
 }());

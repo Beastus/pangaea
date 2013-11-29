@@ -71,24 +71,27 @@
 	 */
 	pan.util.render = function (canvas) {
 
+		var settings = pan.settings,
+			context = canvas.context;
+
 		// draw hit regions
-		if (pan.settings.drawHitRegions) {
-			if (pan.canvas.drawHitRegions) {
-				pan.canvas.drawHitRegions();
+		if (settings.drawHitRegions) {
+			if (canvas.drawHitRegions) {
+				canvas.drawHitRegions();
 			}
 		}
 
 		// draw test player
-		if (pan.settings.enablePlayer) {
+		if (settings.enablePlayer) {
 			canvas.player.draw(canvas.context);
 		}
 
 		// debug code (fps)
-		if (pan.settings.drawFps) {
+		if (settings.drawFps) {
 			// display fps stats
-			canvas.context.font = pan.settings.fontStyle;
-			canvas.context.fillStyle = pan.settings.fontColor;
-			canvas.context.fillText('FPS: ' +
+			context.font = settings.fontStyle;
+			context.fillStyle = settings.fontColor;
+			context.fillText('FPS: ' +
 				canvas.deltaTimer.getFrameRate(), 6, 14);
 		}
 	};
@@ -202,11 +205,23 @@
 			 * @method
 			 */
 			update: function () {
-				var key, rate, bounds, i, region, buffer = {x: cx, y: cy};
-				if (pan.util.keyboard.stack.length > 0) {
+
+				var key,
+					rate,
+					bounds,
+					i,
+					len,
+					region,
+					buffer = {x: cx, y: cy},
+					canvas = pan.canvas,
+					map = canvas.map,
+					hitRegions = canvas.hitRegions,
+					keyboard = pan.util.keyboard;
+
+				if (keyboard.stack.length > 0) {
 					//
-					rate = pan.util.keyboard.shift ? this.speed * 2 : this.speed;
-					key = pan.util.keyboard.peek();
+					rate = keyboard.shift ? this.speed * 2 : this.speed;
+					key = keyboard.peek();
 
 					// adjust cx/cy values based on keyboard state
 					if (key === 'w') {
@@ -223,13 +238,13 @@
 						return;
 					}
 
-					cx = cx.clamp(0, (pan.canvas.map.width * 32) - w);
-					cy = cy.clamp(0, (pan.canvas.map.height * 32) - h);
+					cx = cx.clamp(0, (map.width * 32) - w);
+					cy = cy.clamp(0, (map.height * 32) - h);
 
 					if (pan.settings.enableHitTesting) {
 						// do not update if hit test fails
-						for (i = 0; i < pan.canvas.hitRegions.length; i++) {
-							region = pan.canvas.hitRegions[i];
+						for (i = 0, len = hitRegions.length; i < len; i++) {
+							region = hitRegions[i];
 							if (this.hitTest(region, cx, cy, cx + w, cy + h)) {
 								cx = buffer.x;
 								cy = buffer.y;
@@ -239,20 +254,20 @@
 					}
 
 					// move player sprite or map depending on map bounds
-					bounds = pan.canvas.map.clamp;
+					bounds = map.clamp;
 					if (cx >= bounds.x && cx <= bounds.w) {
-						pan.canvas.map.offsetx = -(cx - bounds.x);
+						map.offsetx = -(cx - bounds.x);
 						x = bounds.x;
 					} else {
 						x = (cx >= bounds.x) ? cx - (bounds.w - bounds.x) : cx;
-						x = x.clamp(0, pan.canvas.width - w);
+						x = x.clamp(0, canvas.width - w);
 					}
 					if (cy >= bounds.y && cy <= bounds.h) {
-						pan.canvas.map.offsety = -(cy - bounds.y);
+						map.offsety = -(cy - bounds.y);
 						y = bounds.y;
 					} else {
 						y = (cy >= bounds.y) ? cy - (bounds.h - bounds.y) : cy;
-						y = y.clamp(0, pan.canvas.height - h);
+						y = y.clamp(0, canvas.height - h);
 					}
 				}
 			},
@@ -277,7 +292,10 @@
 			 * @method
 			 */
 			hitTest: function (region, left, top, right, bottom) {
-				return (region.x < right) && ((region.x + region.w) > left) && (region.y < bottom) && ((region.y + region.h) > top);
+				return (region.x < right) &&
+					((region.x + region.w) > left) &&
+					(region.y < bottom) &&
+					((region.y + region.h) > top);
 			}
 		};
 	};
@@ -342,49 +360,51 @@
 		 */
 		bind: function () {
 
+			var keyboard = pan.util.keyboard;
+
 			document.onkeydown = function (event) {
 				event = event || window.event;
 				var code = event.keyCode;
 				if (code === 16) {
-					pan.util.keyboard.shift = true;
+					keyboard.shift = true;
 				} else if (code === 87) {
-					pan.util.keyboard.keydown('w');
+					keyboard.keydown('w');
 				} else if (code === 65) {
-					pan.util.keyboard.keydown('a');
+					keyboard.keydown('a');
 				} else if (code === 83) {
-					pan.util.keyboard.keydown('s');
+					keyboard.keydown('s');
 				} else if (code === 68) {
-					pan.util.keyboard.keydown('d');
+					keyboard.keydown('d');
 				}
 				// debug code
 				if (pan.settings.logKeyInput) {
 					console.log('keybown.keycode: ' + code + '; keyboard: ' +
-						pan.util.keyboard.toString());
+						keyboard.toString());
 				}
 			};
 			document.onkeyup = function (event) {
 				event = event || window.event;
 				var code = event.keyCode;
 				if (code === 16) {
-					pan.util.keyboard.shift = false;
+					keyboard.shift = false;
 				} else if (code === 87) {
-					pan.util.keyboard.keyup('w');
+					keyboard.keyup('w');
 				} else if (code === 65) {
-					pan.util.keyboard.keyup('a');
+					keyboard.keyup('a');
 				} else if (code === 83) {
-					pan.util.keyboard.keyup('s');
+					keyboard.keyup('s');
 				} else if (code === 68) {
-					pan.util.keyboard.keyup('d');
+					keyboard.keyup('d');
 				}
 				// debug code
 				if (pan.settings.logKeyInput) {
 					console.log('keyup.keycode: ' + code + '; keyboard: ' +
-						pan.util.keyboard.toString());
+						keyboard.toString());
 				}
 			};
 			// this prevents sticky keys when window focus is lost
 			window.onblur = function () {
-				pan.util.keyboard.clear();
+				keyboard.clear();
 			};
 		},
 

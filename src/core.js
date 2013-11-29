@@ -65,10 +65,18 @@ var pan = pan || {};
 (function () {
 	'use strict';
 
-	var lastTime = 0, vendors = ['ms', 'moz', 'webkit', 'o'], x, currTime, timeToCall, id, onFullscreenChange;
-	// Based on requestAnimationFrame polyfill by Erik Moller, with fixes from Paul Irish and Tino Zijdel.
-	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-	for (x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+	var settings = pan.settings,
+		canvas = pan.canvas,
+		lastTime = 0,
+		vendors = ['ms', 'moz', 'webkit', 'o'],
+		x,
+		len,
+		currTime,
+		timeToCall,
+		id,
+		onFullscreenChange;
+
+	for (x = 0, len = vendors.length; x < len && !window.requestAnimationFrame; ++x) {
 		window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
 		window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] ||
 			window[vendors[x] + 'CancelRequestAnimationFrame'];
@@ -94,28 +102,30 @@ var pan = pan || {};
 	/*
 	 * auto resize implementation and full screen support for *some* browsers.
 	 */
-	if (pan.settings.autoResize) {
+	if (settings.autoResize) {
 
 		// respond to full screen change
 		onFullscreenChange = function () {
 
-			var c = document.getElementById('canvas');
+			var c = document.getElementById('canvas'),
+				canvas = pan.canvas;
+
 			if (document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen) {
 				// buffer canvas size
-				pan.settings.tempSize = {
-					w: pan.canvas.width,
-					h: pan.canvas.height
+				settings.tempSize = {
+					w: canvas.width,
+					h: canvas.height
 				};
-				pan.canvas.width = screen.width;
-				pan.canvas.height = screen.height;
+				canvas.width = screen.width;
+				canvas.height = screen.height;
 			} else {
-				if (pan.settings.tempSize) {
-					pan.canvas.width = pan.settings.tempSize.w;
-					pan.canvas.height = pan.settings.tempSize.h;
+				if (settings.tempSize) {
+					canvas.width = settings.tempSize.w;
+					canvas.height = settings.tempSize.h;
 				}
 			}
-			c.width = pan.canvas.width;
-			c.height = pan.canvas.height;
+			c.width = canvas.width;
+			c.height = canvas.height;
 		};
 
 		// setup listeners in case fullscreen is enabled
