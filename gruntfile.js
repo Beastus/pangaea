@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
@@ -25,17 +24,14 @@ module.exports = function(grunt) {
       build: {
         files: {
           'build/<%= pkg.name %>-bundle.min.js': 'src/<%= pkg.name %>-bundle.js',
-		  'build/demo.min.js': 'demo/demo.js',
+		  'demo/demo.min.js': 'demo/demo.js',
         }
       }
     }
   });
 
-  // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  // Default task(s).
   grunt.registerTask('default', ['concat', 'uglify']);
-
 };
