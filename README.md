@@ -3,6 +3,8 @@ pangaea
 
 Fiddling with canvas and tools.
 
+Deployed here: http://areologist.com/pangaea/demo.html
+
 Maps created as follows:
 
 	1. Create maps in Tiled.
