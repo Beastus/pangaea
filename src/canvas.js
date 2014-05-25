@@ -1,3 +1,4 @@
+/* global pan */
 
 /**
  * pangaea canvas class

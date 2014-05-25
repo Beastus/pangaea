@@ -1,4 +1,5 @@
-/**
+/* global pan */
+/**  
  * atlas class
  */
 

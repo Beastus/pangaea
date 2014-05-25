@@ -1,3 +1,4 @@
+/* global pan */
 /**
  * spritesheet class
  *

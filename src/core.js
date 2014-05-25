@@ -3,6 +3,7 @@
  *
  * @namespace pan
  */
+
 var pan = pan || {};
 
 (function () {
@@ -66,7 +67,6 @@ var pan = pan || {};
 	'use strict';
 
 	var settings = pan.settings,
-		canvas = pan.canvas,
 		lastTime = 0,
 		vendors = ['ms', 'moz', 'webkit', 'o'],
 		x,

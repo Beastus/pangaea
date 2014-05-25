@@ -1,3 +1,4 @@
+/* global pan */
 /**
  * pangaea utility objects
  *
@@ -378,7 +379,7 @@
 				}
 				// debug code
 				if (pan.settings.logKeyInput) {
-					console.log('keybown.keycode: ' + code + '; keyboard: ' +
+					console.log('keydown.keycode: ' + code + '; keyboard: ' +
 						keyboard.toString());
 				}
 			};

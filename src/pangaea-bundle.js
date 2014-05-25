@@ -3,6 +3,7 @@
  *
  * @namespace pan
  */
+
 var pan = pan || {};
 
 (function () {
@@ -66,7 +67,6 @@ var pan = pan || {};
 	'use strict';
 
 	var settings = pan.settings,
-		canvas = pan.canvas,
 		lastTime = 0,
 		vendors = ['ms', 'moz', 'webkit', 'o'],
 		x,
@@ -134,6 +134,7 @@ var pan = pan || {};
 		document.addEventListener('webkitfullscreenchange', onFullscreenChange);
 	}
 }());
+/* global pan */
 /**
  * pangaea layer class
  *
@@ -325,7 +326,8 @@ var pan = pan || {};
 		return null;
 	};
 }());
-/**
+/* global pan */
+/**  
  * atlas class
  */
 
@@ -427,6 +429,7 @@ var pan = pan || {};
 	};
 
 }());
+/* global pan */
 /**
  * spritesheet class
  *
@@ -500,12 +503,14 @@ var pan = pan || {};
 		this.name = key;
 	};
 }());
+/* global pan */
 /**
  * sprite class
  *
  * @namespace pan
  */
 
+/* global pan */
 
 /**
  * pangaea canvas class
@@ -902,6 +907,7 @@ var pan = pan || {};
 		context.closePath();
 	};
 }());
+/* global pan */
 /**
  * pangaea utility objects
  *
@@ -1282,7 +1288,7 @@ var pan = pan || {};
 				}
 				// debug code
 				if (pan.settings.logKeyInput) {
-					console.log('keybown.keycode: ' + code + '; keyboard: ' +
+					console.log('keydown.keycode: ' + code + '; keyboard: ' +
 						keyboard.toString());
 				}
 			};
