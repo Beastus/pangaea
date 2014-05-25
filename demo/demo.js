@@ -16,7 +16,7 @@ $(document).ready(function () {
 		atlasReady,
 		mapReady;
 
-	// specify initial settings (cookie will override--see below)
+	// specify initial settings
 	pan.settings.enablePlayer = true;
 
 	// attach canvas
@@ -165,12 +165,29 @@ $(document).ready(function () {
 	};
 
 	saveSetting = function (key, value) {
-		$.cookie(key, value, { expires: 7 });
+
+		var storage = getLocalStorage();
+		storage.setItem(key, value);
 	};
 
 	loadSetting = function (key) {
-		return $.cookie(key);
+
+		var storage = getLocalStorage();
+		return storage.getItem(key);
 	};
+
+	function getLocalStorage () {
+
+		if (typeof window.localStorage === "object") {
+
+			return window.localStorage;
+		} else if (typeof window.globalStorage === "object") {
+
+			return window.globalStorage;
+		}
+		// just return a dummy object
+		return { getItem: function () {}, setItem: function() {} };
+	}
 
 	// load previously saved flag states
 	loadAllSettings();

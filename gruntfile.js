@@ -27,11 +27,21 @@ module.exports = function(grunt) {
 		  'demo/demo.min.js': 'demo/demo.js',
         }
       }
-    }
+    },
+    watch: {
+      scripts: {
+        files: 'src/*.js',
+        tasks: ['concat', 'uglify'],
+        options: {
+          interrupt: true,
+        },
+      },
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['concat', 'uglify']);
+  grunt.registerTask('default', ['concat', 'uglify', 'watch']);
 };
