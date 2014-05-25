@@ -2,21 +2,44 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     concat: {
       options: {
-        separator: ';',
+        //separator: ';',
       },
       dist: {
         src: ['src/core.js',
 		      'src/layer.js',
-			  'src/atlas.js',
-			  'src/spritesheet.js',
-			  'src/sprite.js',
-			  'src/canvas.js',
-			  'src/util.js'],
+  			  'src/atlas.js',
+  			  'src/spritesheet.js',
+  			  'src/sprite.js',
+  			  'src/canvas.js',
+  			  'src/util.js'],
         dest: 'src/<%= pkg.name %>-bundle.js',
       },
     },
+
+    jshint: {
+      files: ['src/<%= pkg.name %>-bundle.js'],
+      options: {
+        curly:   true,
+        eqeqeq:  true,
+        immed:   true,
+        latedef: true,
+        newcap:  true,
+        noarg:   true,
+        sub:     true,
+        undef:   true,
+        boss:    true,
+        eqnull:  true,
+        browser: true,
+
+        globals: {
+          console:    true
+        }
+      }
+    },
+
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -28,10 +51,11 @@ module.exports = function(grunt) {
         }
       }
     },
+
     watch: {
       scripts: {
         files: 'src/*.js',
-        tasks: ['concat', 'uglify'],
+        tasks: ['concat', 'jshint', 'uglify'],
         options: {
           interrupt: true,
         },
@@ -40,8 +64,9 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['concat', 'uglify', 'watch']);
+  grunt.registerTask('default', ['concat', 'jshint', 'uglify', 'watch']);
 };

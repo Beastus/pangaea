@@ -133,7 +133,8 @@ var pan = pan || {};
 		document.addEventListener('mozfullscreenchange', onFullscreenChange);
 		document.addEventListener('webkitfullscreenchange', onFullscreenChange);
 	}
-}());;/**
+}());
+/**
  * pangaea layer class
  *
  */
@@ -323,7 +324,8 @@ var pan = pan || {};
 		}
 		return null;
 	};
-}());;/**
+}());
+/**
  * atlas class
  */
 
@@ -424,7 +426,8 @@ var pan = pan || {};
 		//
 	};
 
-}());;/**
+}());
+/**
  * spritesheet class
  *
  * @namespace pan
@@ -496,12 +499,14 @@ var pan = pan || {};
 		this.image = image;
 		this.name = key;
 	};
-}());;/**
+}());
+/**
  * sprite class
  *
  * @namespace pan
  */
-;
+
+
 /**
  * pangaea canvas class
  *
@@ -896,7 +901,8 @@ var pan = pan || {};
 		context.stroke();
 		context.closePath();
 	};
-}());;/**
+}());
+/**
  * pangaea utility objects
  *
  * @namespace pan.util
