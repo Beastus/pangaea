@@ -1,4 +1,3 @@
-/* global pan */
 /**
  * sprite class
  *

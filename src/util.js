@@ -1,4 +1,3 @@
-/* global pan */
 /**
  * pangaea utility objects
  *
