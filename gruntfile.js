@@ -42,12 +42,13 @@ module.exports = function(grunt) {
 
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+        sourceMap: true
       },
       build: {
         files: {
           'build/<%= pkg.name %>-bundle.min.js': 'src/<%= pkg.name %>-bundle.js',
-		  'demo/demo.min.js': 'demo/demo.js',
+		      'demo/demo.min.js': 'demo/demo.js',
         }
       }
     },
