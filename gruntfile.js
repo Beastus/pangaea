@@ -53,6 +53,15 @@ module.exports = function(grunt) {
       }
     },
 
+	connect: {
+	  server: {
+		options: {
+		  port: 8001
+		  //, hostname: '*'
+		}
+	  }
+	},
+
     watch: {
       scripts: {
         files: 'src/*.js',
@@ -67,7 +76,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['concat', 'jshint', 'uglify', 'watch']);
+  grunt.registerTask('default', ['concat', 'jshint', 'uglify', 'connect', 'watch']);
 };
