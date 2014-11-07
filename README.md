@@ -1,9 +1,7 @@
 pangaea
 =======
 
-Fiddling with canvas and tools.
-
-Deployed here: http://areologist.com/pangaea/demo.html
+Fiddling with 2D canvas workflow and tools.
 
 Maps created as follows:
 
@@ -15,3 +13,5 @@ Maps created as follows:
 	5. Optimize assets.
 
 TexturePacker JSON file and .tmx export JSON file loaded and preprocessed to internal data structures.
+
+*Fantasizing about automating (porting) TMX-related stuff as Grunt or Gulp tasks.*
